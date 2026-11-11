@@ -76,8 +76,9 @@ content: [
     ]
   },
   {
-    title: "The Odyssey",
-    content: [
+  title: "The Odyssey",
+image: "kKozMoY6U-pIEn_HnZO-uflq5ERUmDqlh5Qa0CX74iI8KLSGpIv6FfaTwy1vUhUnPiL2TNpQtTBhz1D7bsC23gFPT8PnJwx8TMJRSByg8ug0X-3fp48_DxNy2oOD4zWnGfO35H3iq_lXiwedyE5QQBlgL0E0UCmjaP-gXzx1iuowfOVfIXv2Fehtkr_-OzGX.jpeg",
+content: [
       "Author: Traditionally attributed to Homer. Literary Lens: Humanistic and Psychological Lens.",
       "Historical and Cultural Background: The Odyssey is an ancient Greek epic poem traditionally attributed to Homer. It is considered one of the most important works of ancient Greek literature. The story takes place after the Trojan War and follows the long journey of Odysseus as he tries to return to his home in Ithaca. The poem reflects ancient Greek beliefs about gods, heroes, family, loyalty, and hospitality. During this period, people believed that gods could influence human lives and that showing kindness to visitors was an important part of their culture. Unlike The Iliad, which focuses mainly on war and conflict, The Odyssey focuses on adventure, survival, and the importance of returning home.",
       "Major Characters: Odysseus – The main character and King of Ithaca, known for his intelligence, bravery, and cleverness. Penelope – The faithful wife of Odysseus who patiently waits for his return. Telemachus – The son of Odysseus and Penelope who searches for information about his missing father. Athena – The goddess of wisdom who helps and protects Odysseus and Telemachus. Poseidon – The god of the sea who makes Odysseus' journey difficult. Circe – A sorceress who uses magic to transform Odysseus' companions into animals. Calypso – A goddess who keeps Odysseus on her island and wants him to stay with her. Polyphemus – A one-eyed Cyclops who becomes one of Odysseus' greatest obstacles.",

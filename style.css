@@ -249,3 +249,53 @@ footer p {
     font-size: 1.6rem;
   }
 }
+
+/* ==================================
+   BACKGROUND MUSIC BUTTON
+================================== */
+
+.music-toggle {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 999;
+
+  padding: 13px 22px;
+
+  background: #390817;
+  color: #f4dfb0;
+
+  border: 1px solid #c9a45c;
+  border-radius: 30px;
+
+  font-family: "Lora", serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+
+  transition: all 0.3s ease;
+}
+
+.music-toggle:hover {
+  background: #64142b;
+  color: #fff4d8;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+.music-toggle:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .music-toggle {
+    right: 15px;
+    bottom: 15px;
+    padding: 11px 17px;
+    font-size: 11px;
+  }
+}

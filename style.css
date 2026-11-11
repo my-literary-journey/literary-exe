@@ -966,3 +966,174 @@ footer {
     transition-duration: .01ms !important;
   }
 }
+
+/* ==========================================
+   LEARNING SECTION
+========================================== */
+
+.learning-section {
+  padding-top: 110px;
+  padding-bottom: 115px;
+  background:
+    radial-gradient(ellipse at 15% 50%, rgba(198, 164, 107, .10), transparent 50%),
+    #26050f;
+}
+
+.learning-card {
+  position: relative;
+  max-width: 1050px;
+  margin: auto;
+  padding: 65px clamp(25px, 7vw, 85px);
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(255,255,255,.6), transparent 55%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(80,50,20,.025) 0,
+      rgba(80,50,20,.025) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    var(--paper);
+  border: 10px solid #9b744b;
+  outline: 1px solid var(--gold);
+  outline-offset: -17px;
+  box-shadow: 0 25px 55px rgba(0,0,0,.35);
+  color: var(--ink);
+}
+
+.learning-decoration {
+  position: absolute;
+  top: 25px;
+  right: 35px;
+  color: #a47b4b;
+  font-size: 30px;
+}
+
+.learning-card .prose {
+  max-width: 850px;
+  margin: auto;
+}
+
+.learning-card .prose p:first-child {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: #54172a;
+}
+
+.learning-card .prose p {
+  text-align: justify;
+  line-height: 2.1;
+  margin-bottom: 22px;
+}
+
+/* ==========================================
+   REFLECTION SECTION
+========================================== */
+
+.reflection-section {
+  padding-top: 110px;
+  padding-bottom: 120px;
+  background:
+    radial-gradient(ellipse at 85% 45%, rgba(100, 25, 46, .35), transparent 55%),
+    #310817;
+}
+
+.reflection-card {
+  position: relative;
+  max-width: 1050px;
+  margin: auto;
+  padding: 70px clamp(25px, 7vw, 85px) 55px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.15), transparent 45%),
+    #eee3d0;
+  border: 1px solid #c6a46b;
+  box-shadow: 0 25px 60px rgba(0,0,0,.35);
+  color: var(--ink);
+}
+
+.reflection-quote {
+  position: absolute;
+  top: 5px;
+  left: 35px;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 100px;
+  line-height: 1;
+  color: rgba(90, 20, 40, .18);
+}
+
+.reflection-card .prose {
+  position: relative;
+  z-index: 1;
+}
+
+.reflection-card .prose p {
+  text-align: justify;
+  line-height: 2.1;
+  margin-bottom: 22px;
+}
+
+.reflection-card .prose p:first-child {
+  color: #54172a;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.reflection-ending {
+  margin-top: 45px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(90, 20, 40, .3);
+  color: #916a3e;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+/* ==========================================
+   LEARNING AND REFLECTION MOBILE DESIGN
+========================================== */
+
+@media (max-width: 650px) {
+
+  .learning-section,
+  .reflection-section {
+    padding-top: 75px;
+    padding-bottom: 80px;
+  }
+
+  .learning-card {
+    padding: 55px 25px 35px;
+    border-width: 7px;
+    outline-offset: -12px;
+  }
+
+  .learning-decoration {
+    top: 15px;
+    right: 20px;
+    font-size: 23px;
+  }
+
+  .learning-card .prose p,
+  .reflection-card .prose p {
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.9;
+  }
+
+  .reflection-card {
+    padding: 65px 25px 35px;
+  }
+
+  .reflection-quote {
+    left: 20px;
+    top: 10px;
+    font-size: 75px;
+  }
+
+  .reflection-ending {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+}
+

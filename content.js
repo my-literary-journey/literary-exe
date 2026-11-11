@@ -47,7 +47,8 @@ content: [
   },
   {
     title: "The Mahabharata",
-    content: [
+image: "OBwDsJPJi5gWdwFHgEMERdnLUVUxTdXM-sVIMvlUKB8-geZpqZtk2SGDvWseUzDUs_cNjoLKIlBD7x6tSL3vSo0DedxZImJJGnj4mGITMAUnTy-pMx51Q9ZsXd9pI9_aNTCWoUu9kks9o5HNv9SoFarSw76XMcozQ0BNmPeVp8AVNB4BqcEF7CeE2BC5EOAu.jpeg",
+content: [
       "Author: Traditionally attributed to Vyasa (also known as Ved Vyasa). Literary Lens: Moral and Philosophical Lens.",
       "Historical and Cultural Background: The Mahabharata is one of the oldest and most important epic stories from ancient India. It was traditionally attributed to Vyasa and written in Sanskrit. The story reflects the beliefs, traditions, and values of ancient Indian society, especially their ideas about family, leadership, duty, and morality. It focuses on the conflict between two groups of cousins, the Pandavas and the Kauravas, who both wanted control of the kingdom. It also includes Hindu religious beliefs, particularly the idea of Dharma, which means doing what is right and fulfilling one's responsibilities.",
       "Major Characters: Yudhishthira – The eldest Pandava brother, known for his honesty and sense of duty. Bhima – The second Pandava brother, known for his great strength and courage. Arjuna – A skilled warrior and one of the main heroes of the story. Nakula and Sahadeva – The youngest Pandava brothers who also take part in the battle. Duryodhana – The eldest Kaurava brother who is jealous of the Pandavas and wants to control the kingdom. Krishna – A divine figure who guides and advises Arjuna throughout the story. Draupadi – The wife of the five Pandava brothers, whose mistreatment becomes an important part of the conflict.",

@@ -4,90 +4,382 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LITERARY.exe | My Great Books Portfolio</title>
+  <meta name="theme-color" content="#390817">
+  <meta name="description" content="Imae Metas — My Literary Journey: A Great Books Digital Portfolio">
+
+  <title>LITERARY.exe | My Literary Journey</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700;800;900&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <header>
-    <h1>LITERARY.exe</h1>
-    <p>A Journey Through the World of Literature</p>
-    <nav>
-      <a href="#profile">My Profile</a>
-      <a href="#analyses">Literary Works</a>
-      <a href="#masterpiece">My Favorite</a>
-      <a href="#learning">Learning</a>
-      <a href="#reflection">Reflection</a>
+  <div class="grain"></div>
+
+  <!-- NAVIGATION -->
+  <header class="topbar">
+
+    <a class="brand" href="#home" aria-label="Literary home">
+      <span class="brand-mark">L</span>
+      <span>LITERARY<span class="brand-dot">.exe</span></span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">
+      ☰
+    </button>
+
+    <nav id="mainNav">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#profile" class="nav-link">The Reader</a>
+      <a href="#library" class="nav-link">Bookshelf</a>
+      <a href="#favorite" class="nav-link">My Favorite</a>
+      <a href="#learning" class="nav-link">Learning</a>
+      <a href="#reflection" class="nav-link">Reflection</a>
     </nav>
+
   </header>
 
   <main>
-    <section class="hero">
-      <p class="eyebrow">MY GREAT BOOKS PORTFOLIO</p>
-      <h2>Between the Pages<br>of Great Stories</h2>
-      <p>Every story has a lesson, and every page has something to teach.</p>
-      <a class="button" href="#profile">Explore My Portfolio</a>
-    </section>
 
-    <section id="profile">
-      <h2>01. Student Profile</h2>
-      <div class="profile-card">
-       <img src="org.picseditor.blurbackground_202689195122302.png" alt="Imae Metas - Student Profile">
-        <div>
-          <h3>Imae Metas</h3>
-          <p>BS Architecture Student</p>
-          <p>University of Nueva Caceres</p>
-          <p>A student and reader exploring literature, stories, and the lessons behind them.</p>
+    <!-- HOME -->
+    <section class="hero page-section" id="home">
+
+      <div class="hero-copy">
+
+        <p class="eyebrow">
+          <span class="eyebrow-line"></span>
+          A DIGITAL LITERARY ARCHIVE · 2026
+        </p>
+
+        <h1>
+          Every book<br>
+          holds a <em>world.</em>
+        </h1>
+
+        <p class="hero-lede">
+          Welcome to my literary journey — a collection of stories,
+          ideas, and lessons that shaped the way I see literature and life.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#library">
+            Enter the library <span>↗</span>
+          </a>
+
+          <a class="text-link" href="#profile">
+            Meet the reader <span>→</span>
+          </a>
         </div>
+
+        <div class="hero-note">
+          <span class="tiny-star">✳</span>
+          <span>
+            MY LITERARY JOURNEY<br>
+            <b>A GREAT BOOKS DIGITAL PORTFOLIO</b>
+          </span>
+        </div>
+
       </div>
+
+      <div class="hero-art" aria-label="Decorative stack of vintage books">
+
+        <div class="moon"></div>
+        <div class="spark spark-one">✦</div>
+        <div class="spark spark-two">✧</div>
+
+        <div class="book-stack">
+
+          <div class="book book-back">
+            <span>THE ART OF STORIES</span>
+            <i>✦</i>
+          </div>
+
+          <div class="book book-mid">
+            <span>GREAT BOOKS</span>
+            <i>❧</i>
+          </div>
+
+          <div class="book book-front">
+            <small>VOLUME I</small>
+            <strong>MY<br>LITERARY<br>JOURNEY</strong>
+            <i>✧</i>
+            <small class="book-author">IMAE METAS</small>
+          </div>
+
+        </div>
+
+        <div class="art-caption">
+          A QUIET PLACE FOR<br>
+          WORDS & WONDER
+        </div>
+
+      </div>
+
+      <div class="hero-bottom">
+        <span>SCROLL TO EXPLORE</span>
+        <span class="scroll-line"></span>
+        <span>01 — 05</span>
+      </div>
+
     </section>
 
-    <section id="analyses">
-      <h2>02. Literary Analyses</h2>
-      <p class="intro">Explore the seven literary works included in my portfolio.</p>
-      <div class="book-grid" id="bookshelf">
-        <button class="book" data-book="0">The Ancient of Days</button>
-        <button class="book" data-book="1">The Panchatantra</button>
-        <button class="book" data-book="2">The Ramayana</button>
-        <button class="book" data-book="3">The Mahabharata</button>
-        <button class="book" data-book="4">The Iliad</button>
-        <button class="book" data-book="5">The Odyssey</button>
-        <button class="book" data-book="6">The Song of Roland</button>
-      </div>
-      <article id="readingView" class="reading-view">
-        <p>Select a book above to read its analysis.</p>
-      </article>
+    <!-- INTRODUCTION STRIP -->
+    <section class="intro-strip">
+      <span>READ</span>
+      <i>✳</i>
+      <span>REFLECT</span>
+      <i>✳</i>
+      <span>DISCOVER</span>
+      <i>✳</i>
+      <span>GROW</span>
     </section>
 
-    <section id="masterpiece">
-      <h2>03. My Favorite Masterpiece</h2>
-      <img class="feature-image" src="xwycG9N1Ngr8CzLEgi44kvO2CpkkSrulNKkWbvtN0WZMc4qhFP6tMoGHt4FAnOyjQRoxXREQaswj908IbwPnRTU7vhCl6leWvQUowPvdCp0GfZYLo4QOFt5mZW1p36WPl7ijtr4NDG0y1Y0UaLm6jA-2WnxPnjwnSw98wsmTGM6_f3CYCMFb4VitMblH_MFj.jpeg" alt="The Ramayana">
-      <h3>The Ramayana</h3>
-      <p>One of the literary works that made a meaningful impression on me.</p>
+    <!-- STUDENT PROFILE -->
+    <section class="content-section profile-section page-section" id="profile">
+
+      <div class="section-heading">
+
+        <p class="eyebrow">01 / THE READER</p>
+
+        <h2>
+          A little about<br>
+          <em>the person behind the pages.</em>
+        </h2>
+
+        <p class="section-desc">
+          Every reader brings a different perspective to every story.
+          Here is mine.
+        </p>
+
+      </div>
+
+      <div class="profile-layout">
+
+        <div class="portrait-frame">
+
+          <div class="portrait-placeholder profile-photo">
+            <img
+              src="org.picseditor.blurbackground_202689195122302.png"
+              alt="Imae Metas - Student Profile"
+            >
+          </div>
+
+          <div class="portrait-stamp">
+            THE<br>READER
+          </div>
+
+        </div>
+
+        <article class="paper-card" id="profileContent"></article>
+
+      </div>
+
     </section>
 
-    <section id="learning">
-      <h2>04. Summary of Learning</h2>
-      <div id="learningContent">
-        <p>My learning journey through the world of literature.</p>
+    <!-- SEVEN LITERARY WORKS -->
+    <section class="library-section page-section" id="library">
+
+      <div class="library-top">
+
+        <div>
+          <p class="eyebrow">02 / THE COLLECTION</p>
+
+          <h2>
+            Choose a book.<br>
+            <em>Open a new world.</em>
+          </h2>
+        </div>
+
+        <p class="library-intro">
+          Seven literary works, each with its own story, background,
+          conflicts, themes, and personal insights.
+          Select a volume to begin reading.
+        </p>
+
       </div>
+
+      <div class="shelf-label">
+        <span>THE GREAT BOOKS COLLECTION</span>
+        <span>7 VOLUMES <b>✦</b></span>
+      </div>
+
+      <!-- JavaScript loads the seven book covers here -->
+      <div class="bookshelf" id="bookshelf"></div>
+
+      <div class="shelf-wood"></div>
+
+      <!-- LITERARY ANALYSIS READER -->
+      <div class="reading-view hidden" id="readingView">
+
+        <button class="back-link" id="backToShelf">
+          ← Back to bookshelf
+        </button>
+
+        <div class="reading-header">
+
+          <span class="eyebrow" id="readingNumber">
+            VOLUME 01
+          </span>
+
+          <span class="reading-rule"></span>
+
+          <span class="eyebrow">
+            LITERARY ANALYSIS
+          </span>
+
+        </div>
+
+        <h2 id="readingTitle"></h2>
+
+        <article class="reading-paper" id="readingContent"></article>
+
+        <div class="reading-footer">
+
+          <button class="button button-outline" id="prevBook">
+            ← Previous book
+          </button>
+
+          <span id="readingCount">01 / 07</span>
+
+          <button class="button button-primary" id="nextBook">
+            Next book →
+          </button>
+
+        </div>
+
+      </div>
+
     </section>
 
-    <section id="reflection">
-      <h2>05. Personal Reflection</h2>
-      <div id="reflectionContent">
-        <p>My personal thoughts and reflections about the stories I have read.</p>
+    <!-- FAVORITE MASTERPIECE -->
+    <section class="favorite-section page-section" id="favorite">
+
+      <div class="favorite-cover">
+
+        <img
+          class="favorite-art"
+          src="xwycG9N1Ngr8CzLEgi44kvO2CpkkSrulNKkWbvtN0WZMc4qhFP6tMoGHt4FAnOyjQRoxXREQaswj908IbwPnRTU7vhCl6leWvQUowPvdCp0GfZYLo4QOFt5mZW1p36WPl7ijtr4NDG0y1Y0UaLm6jA-2WnxPnjwnSw98wsmTGM6_f3CYCMFb4VitMblH_MFj.jpeg"
+          alt="The Ramayana"
+        >
+
+        <div class="cover-ornament">❧</div>
+
+        <small>MY CHOSEN MASTERPIECE</small>
+
+        <strong>
+          THE<br>RAMAYANA
+        </strong>
+
+        <span>AN ANCIENT INDIAN EPIC</span>
+
+        <div class="cover-ornament bottom">✦</div>
+
       </div>
+
+      <div class="favorite-copy">
+
+        <p class="eyebrow">03 / THE BOOK THAT STAYED</p>
+
+        <h2>
+          My favorite<br>
+          <em>literary masterpiece.</em>
+        </h2>
+
+        <p class="section-desc">
+          Some stories stay with us long after we finish reading.
+          This is the work that became most meaningful to me.
+        </p>
+
+        <article id="favoriteContent" class="prose-block"></article>
+
+      </div>
+
     </section>
+
+    <!-- LEARNING -->
+    <section class="learning-section page-section" id="learning">
+
+      <div class="section-heading centered">
+
+        <p class="eyebrow">04 / WHAT I CARRY WITH ME</p>
+
+        <h2>
+          Lessons between<br>
+          <em>the lines.</em>
+        </h2>
+
+        <p class="section-desc">
+          A look back at the knowledge, skills, and realizations
+          I gained throughout Great Books.
+        </p>
+
+      </div>
+
+      <article id="learningContent" class="learning-paper"></article>
+
+    </section>
+
+    <!-- REFLECTION -->
+    <section class="reflection-section page-section" id="reflection">
+
+      <div class="reflection-title">
+
+        <p class="eyebrow">05 / THE READER'S JOURNAL</p>
+
+        <h2>
+          Thoughts from<br>
+          <em>the final chapter.</em>
+        </h2>
+
+        <p>
+          Reading changes the way we see stories.
+          Reflection changes the way we see ourselves.
+        </p>
+
+        <div class="journal-mark">❧</div>
+
+      </div>
+
+      <article id="reflectionContent" class="reflection-paper"></article>
+
+    </section>
+
   </main>
 
-  <footer>
-    <p>LITERARY.exe | Great Books Portfolio</p>
-    <p>Created by Imae Metas</p>
+  <!-- FOOTER -->
+  <footer class="footer">
+
+    <div class="footer-brand">
+      LITERARY<span>.exe</span>
+    </div>
+
+    <p>
+      “A book is a doorway. Every reader brings the key.”
+    </p>
+
+    <div class="footer-line"></div>
+
+    <small>
+      MY LITERARY JOURNEY · GREAT BOOKS DIGITAL PORTFOLIO · IMAE METAS
+    </small>
+
+    <a href="#home" class="back-top">
+      BACK TO TOP ↑
+    </a>
+
   </footer>
 
+  <div class="progress-track">
+    <span id="progressBar"></span>
+  </div>
+
+  <!-- KEEP THESE TWO FILES -->
   <script src="content.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
-v

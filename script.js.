@@ -1,13 +1,20 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
+  // ==================================
+  // 1. BOOK COLLECTION
+  // ==================================
+
   const bookButtons = document.querySelectorAll(".book");
   const readingView = document.getElementById("readingView");
 
   function displayBook(index) {
 
     if (!window.BOOKS || !window.BOOKS[index]) {
-      readingView.innerHTML = "<p>Book content is not available yet.</p>";
+      if (readingView) {
+        readingView.innerHTML =
+          "<p>Book content is not available yet.</p>";
+      }
       return;
     }
 
@@ -17,21 +24,37 @@ document.addEventListener("DOMContentLoaded", function () {
       button.classList.remove("active");
     });
 
-    bookButtons[index].classList.add("active");
+    if (bookButtons[index]) {
+      bookButtons[index].classList.add("active");
+    }
 
-    readingView.innerHTML = `
-   <p class="eyebrow">LITERARY ANALYSIS</p>
-<h3>${book.title}</h3>
+    if (readingView) {
+      readingView.innerHTML = `
+        <p class="eyebrow">LITERARY ANALYSIS</p>
+        <h3>${book.title}</h3>
 
-${book.image ? `<img class="feature-image" src="${book.image}" alt="${book.title}">` : ""}
+        ${book.image ? `
+          <img
+            class="feature-image"
+            src="${book.image}"
+            alt="${book.title}"
+          >
+        ` : ""}
 
-<div class="book-content">
-    `;
+        <div class="book-content">
+          ${book.content.map(function (paragraph) {
+            return `<p>${paragraph}</p>`;
+          }).join("")}
+        </div>
+      `;
 
-    readingView.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
+      readingView.classList.remove("hidden");
+
+      readingView.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest"
+      });
+    }
   }
 
   bookButtons.forEach(function (button, index) {
@@ -40,14 +63,75 @@ ${book.image ? `<img class="feature-image" src="${book.image}" alt="${book.title
     });
   });
 
-  if (window.LEARNING) {
-    document.getElementById("learningContent").innerHTML =
+
+  // ==================================
+  // 2. LEARNING AND REFLECTION
+  // ==================================
+
+  const learningContent =
+    document.getElementById("learningContent");
+
+  const reflectionContent =
+    document.getElementById("reflectionContent");
+
+  if (window.LEARNING && learningContent) {
+    learningContent.innerHTML =
       `<p>${window.LEARNING}</p>`;
   }
 
-  if (window.REFLECTION) {
-    document.getElementById("reflectionContent").innerHTML =
+  if (window.REFLECTION && reflectionContent) {
+    reflectionContent.innerHTML =
       `<p>${window.REFLECTION}</p>`;
+  }
+
+
+  // ==================================
+  // 3. BACKGROUND MUSIC
+  // ==================================
+
+  const music = document.getElementById("backgroundMusic");
+  const musicToggle = document.getElementById("musicToggle");
+
+  if (music && musicToggle) {
+
+    music.volume = 0.35;
+
+    function updateMusicButton() {
+      if (music.paused) {
+        musicToggle.innerHTML = "♫ Sound Off";
+        musicToggle.setAttribute("aria-label", "Play background music");
+      } else {
+        musicToggle.innerHTML = "♫ Sound On";
+        musicToggle.setAttribute("aria-label", "Stop background music");
+      }
+    }
+
+    // Attempt automatic playback
+    music.play()
+      .then(function () {
+        updateMusicButton();
+      })
+      .catch(function () {
+        updateMusicButton();
+      });
+
+    // Play or pause when clicked
+    musicToggle.addEventListener("click", function () {
+
+      if (music.paused) {
+        music.play().then(function () {
+          updateMusicButton();
+        }).catch(function () {
+          updateMusicButton();
+        });
+      } else {
+        music.pause();
+        updateMusicButton();
+      }
+
+    });
+
+    updateMusicButton();
   }
 
 });

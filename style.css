@@ -1283,3 +1283,202 @@ img {
     font-size: 3.4rem;
   }
 }
+/* ==========================================
+   LITERARY.exe — OPENING BOOK COVER
+========================================== */
+
+body.website-locked {
+  overflow: hidden;
+}
+
+.opening-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 25px;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(135, 55, 69, .35), transparent 45%),
+    linear-gradient(135deg, #16030a, #390817 55%, #1d040c);
+  color: var(--cream);
+  transition: opacity .65s ease, visibility .65s ease;
+}
+
+.opening-screen.opening-exit {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.opening-frame {
+  position: relative;
+  width: min(620px, 100%);
+  padding: 35px 25px;
+  border: 1px solid rgba(199, 166, 106, .65);
+  outline: 1px solid rgba(199, 166, 106, .25);
+  outline-offset: 9px;
+  text-align: center;
+}
+
+.opening-small {
+  color: var(--gold-light);
+  font-size: .65rem;
+  letter-spacing: .24em;
+}
+
+.opening-ornament {
+  margin: 22px 0;
+  color: var(--gold);
+  font-size: 1.4rem;
+}
+
+.opening-book {
+  width: min(340px, 85%);
+  min-height: 390px;
+  margin: 0 auto;
+  padding: 12px;
+  border: 2px solid #d2b477;
+  background:
+    radial-gradient(ellipse at center, rgba(150, 77, 77, .35), transparent 65%),
+    linear-gradient(145deg, #702039, #390817 60%, #21040d);
+  box-shadow:
+    12px 14px 0 #18040a,
+    0 25px 50px rgba(0, 0, 0, .4),
+    inset 0 0 30px rgba(0, 0, 0, .2);
+  animation: openingFloat 4s ease-in-out infinite;
+}
+
+.opening-book-border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 362px;
+  padding: 25px 15px;
+  border: 1px solid var(--gold);
+  outline: 1px solid rgba(226, 201, 145, .45);
+  outline-offset: -9px;
+}
+
+.opening-book-label,
+.opening-book-author {
+  color: var(--gold-light);
+  font-size: .57rem;
+  letter-spacing: .2em;
+}
+
+.opening-book-title {
+  margin: 35px 0 20px;
+  color: #fff4dc;
+  font-family: 'Bodoni Moda', serif;
+  font-size: clamp(2rem, 7vw, 3.1rem);
+  font-weight: 600;
+  line-height: 1.08;
+}
+
+.opening-book-title em {
+  display: block;
+  margin-top: 8px;
+  color: var(--gold-light);
+  font-weight: 400;
+}
+
+.opening-book-flourish {
+  margin: 10px 0 28px;
+  color: var(--gold);
+  font-size: 2rem;
+}
+
+.opening-description {
+  max-width: 440px;
+  margin: 35px auto 25px;
+  color: #e5d4c5;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.opening-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-width: 205px;
+  padding: 15px 22px;
+  border: 1px solid var(--gold-light);
+  background: var(--gold);
+  color: var(--wine-dark);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  transition: .3s ease;
+}
+
+.opening-button:hover {
+  transform: translateY(-4px);
+  background: var(--gold-light);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
+}
+
+.opening-button span {
+  font-size: 1.1rem;
+}
+
+.opening-footer {
+  margin-top: 40px;
+  color: #cbb9a8;
+  font-size: .55rem;
+  letter-spacing: .17em;
+}
+
+.opening-decoration {
+  position: absolute;
+  color: rgba(226, 201, 145, .45);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  pointer-events: none;
+}
+
+.opening-decoration-one {
+  top: 8%;
+  left: 9%;
+}
+
+.opening-decoration-two {
+  right: 9%;
+  bottom: 8%;
+}
+
+@keyframes openingFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(1deg);
+  }
+}
+
+@media (max-width: 500px) {
+  .opening-frame {
+    padding: 25px 15px;
+  }
+
+  .opening-book {
+    min-height: 340px;
+  }
+
+  .opening-book-border {
+    min-height: 312px;
+  }
+
+  .opening-description {
+    font-size: 1rem;
+  }
+
+  .opening-decoration {
+    font-size: 2.5rem;
+  }
+}

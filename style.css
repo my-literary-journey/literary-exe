@@ -1,505 +1,61 @@
 
 /* ==========================================
-   UPDATED BOOK COVER DESIGN
-   Matches the new script.js
+   REFLECTION CARD STRUCTURE FIX
 ========================================== */
 
-.bookshelf-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: start;
-}
-
-.book-card {
-  padding: 12px;
-  border: 0;
-  background: transparent;
-  min-width: 0;
-}
-
-.book-card:hover {
-  background: transparent;
-}
-
-.book-cover-wrap {
-  display: block;
+.reflection-bookshelf-grid > .reflection-mini-cover {
   width: 100%;
-  aspect-ratio: 3 / 4;
-  position: relative;
-  overflow: hidden;
-  border: 5px solid #c7a66a;
-  border-radius: 3px;
-  background: linear-gradient(145deg, #641a30, #270510);
-  box-shadow:
-    7px 8px 0 #21040d,
-    0 15px 28px rgba(0, 0, 0, 0.4);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.book-card:hover .book-cover-wrap {
-  transform: translateY(-8px) rotateY(-4deg);
-  box-shadow:
-    10px 12px 0 #21040d,
-    0 22px 35px rgba(0, 0, 0, 0.45);
-}
-
-.book-cover-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.cover-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  text-align: center;
-  color: #fff4df;
-  background: linear-gradient(
-    to bottom,
-    rgba(30, 3, 12, 0.12),
-    rgba(30, 3, 12, 0.75)
-  );
-  pointer-events: none;
-}
-
-.cover-volume {
-  position: absolute;
-  top: 16px;
-  left: 5px;
-  right: 5px;
-  color: #fff0cb;
-  font-size: 0.57rem;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 5px #21040d;
-}
-
-.cover-ornament {
-  color: #e1c994;
-  font-size: 1.8rem;
-  margin-bottom: 12px;
-  text-shadow: 0 2px 5px #21040d;
-}
-
-.cover-title {
-  color: #fff5df;
-  font-family: 'Bodoni Moda', serif;
-  font-size: clamp(0.95rem, 1.5vw, 1.35rem);
-  font-weight: 700;
-  line-height: 1.25;
-  text-shadow: 0 2px 7px #21040d;
-}
-
-.cover-author {
-  margin-top: 13px;
-  color: #f1d8a7;
-  font-family: 'Lora', serif;
-  font-size: 0.55rem;
-  letter-spacing: 1.5px;
-  text-shadow: 0 2px 5px #21040d;
-}
-
-.cover-image-missing {
-  background:
-    linear-gradient(rgba(48, 5, 18, 0.2), rgba(48, 5, 18, 0.7)),
-    linear-gradient(145deg, #70233c, #270510);
-}
-
-.book-open-label {
-  display: block;
-  margin-top: 20px;
-  font-size: 0.62rem;
-  letter-spacing: 2px;
-  color: var(--gold-light);
-}
-
-/* ==========================================
-   REAL OPEN BOOK / TWO-PAGE LAYOUT
-========================================== */
-
-.reader-section {
-  background:
-    radial-gradient(ellipse at center, #f5e9d2, #d9c7a9);
-}
-
-.reader-paper {
-  max-width: 1200px;
-  padding: 45px 45px 35px;
-  background: #e9d9bd;
-  border: 1px solid #b89b6b;
-  box-shadow: 0 20px 50px rgba(38, 16, 8, 0.2);
-}
-
-.book-open-spread {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  position: relative;
-  margin-top: 15px;
-  background: #f5ecd9;
-  border: 1px solid #d0bb96;
-  box-shadow: 0 12px 30px rgba(55, 28, 18, 0.12);
-  animation: openBookPages 0.65s ease both;
-}
-
-.book-open-spread::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 25px;
-  transform: translateX(-50%);
-  background: linear-gradient(
-    to right,
-    rgba(100, 71, 39, 0.04),
-    rgba(100, 71, 39, 0.18),
-    rgba(100, 71, 39, 0.04)
-  );
-  z-index: 2;
-  pointer-events: none;
-}
-
-.book-page {
-  position: relative;
-  min-width: 0;
-  min-height: 480px;
-  padding: 40px 38px 65px;
-  background:
-    linear-gradient(rgba(255, 252, 242, 0.96), rgba(255, 252, 242, 0.96)),
-    repeating-linear-gradient(
-      0deg,
-      #eee1c8,
-      #eee1c8 2px,
-      #f5ead6 2px,
-      #f5ead6 4px
-    );
-  color: #45362a;
-  font-family: 'Lora', serif;
-  font-size: 0.84rem;
-  line-height: 1.95;
-  text-align: justify;
-}
-
-.book-page-left {
-  border-right: 1px solid #d7c5a4;
-}
-
-.book-page-right {
-  border-left: 1px solid rgba(190, 166, 128, 0.35);
-}
-
-.page-running-title {
-  margin-bottom: 25px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #d7c5a4;
-  color: #9b7545;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.85rem;
-  font-style: italic;
-  text-align: center;
-}
-
-.reading-image-frame {
-  margin: 5px auto 28px;
-  padding: 9px;
-  max-width: 330px;
-  background: #fffaf0;
-  border: 1px solid #c7a66a;
-  box-shadow: 0 8px 20px rgba(55, 28, 18, 0.13);
-}
-
-.reading-image {
-  display: block;
-  width: 100%;
-  max-height: 350px;
-  object-fit: contain;
-  margin: 0;
-  border: 0;
-  outline: 0;
-  box-shadow: none;
-}
-
-.reading-paragraph {
-  margin-bottom: 20px;
-  text-indent: 25px;
-  overflow-wrap: anywhere;
-}
-
-.page-number {
-  position: absolute;
-  bottom: 22px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: #a18458;
-  font-size: 0.8rem;
-}
-
-@keyframes openBookPages {
-  from {
-    opacity: 0;
-    transform: perspective(1000px) rotateY(-5deg) translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: perspective(1000px) rotateY(0) translateY(0);
-  }
-}
-
-/* ==========================================
-   REFLECTION MINI BOOKS
-========================================== */
-
-.reflection-bookshelf {
-  display: block;
-}
-
-.reflection-intro {
-  max-width: 850px;
-  margin: 0 auto 35px;
-  padding: 25px 30px;
-  background: #fffaf0;
-  border: 1px solid #d7c39f;
-  color: #493a2d;
-  font-size: 0.88rem;
-  line-height: 1.9;
-  text-align: justify;
-}
-
-.reflection-intro p {
-  margin-bottom: 12px;
-}
-
-.reflection-bookshelf-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  max-width: 1050px;
-  margin: auto;
-}
-
-.reflection-book-card {
   min-width: 0;
   min-height: 250px;
   padding: 14px;
-  background: linear-gradient(145deg, #641a30, #270510);
   border: 2px solid #c7a66a;
   border-radius: 3px;
+  background:
+    linear-gradient(145deg, #641a30, #270510);
   box-shadow:
     7px 8px 0 #b9a27e,
     0 14px 25px rgba(50, 25, 15, 0.18);
+  cursor: pointer;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.reflection-book-card:hover {
+.reflection-bookshelf-grid > .reflection-mini-cover:hover {
   transform: translateY(-7px) rotate(-1deg);
   box-shadow:
     10px 13px 0 #b9a27e,
     0 18px 30px rgba(50, 25, 15, 0.22);
 }
 
-.reflection-mini-cover {
-  min-height: 215px;
-  height: 100%;
-  padding: 18px 12px;
-  outline: 1px solid rgba(199, 166, 106, 0.5);
-  outline-offset: -7px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--cream);
-  background:
-    radial-gradient(circle at center, rgba(130, 55, 68, 0.35), transparent 70%),
-    linear-gradient(145deg, #5a142a, #2b0611);
+.reflection-bookshelf-grid > .reflection-mini-cover:focus-visible,
+.book-card:focus-visible {
+  outline: 3px solid #d8b978;
+  outline-offset: 5px;
 }
 
-.reflection-mini-number {
-  color: var(--gold-light);
-  font-size: 0.58rem;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
-}
-
-.reflection-mini-ornament {
-  color: var(--gold);
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-}
-
-.reflection-mini-title {
-  color: #fff1d8;
-  font-family: 'Bodoni Moda', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.reflection-mini-label {
-  margin-top: 20px;
-  color: var(--gold-light);
-  font-size: 0.58rem;
-  letter-spacing: 2px;
-}
-
-/* ==========================================
-   REFLECTION READING PANEL
-========================================== */
-
-.reflection-reader {
-  max-width: 950px;
-  margin: 45px auto 0;
-  padding: 45px 55px;
-  background: #fffaf0;
-  border: 1px solid #cbb58e;
-  box-shadow: 0 15px 40px rgba(55, 28, 18, 0.1);
-  animation: reveal 0.45s ease;
-}
-
-.reflection-reader-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid #d5c2a0;
-}
-
+/* Reflection reader heading */
 .reflection-reader-label {
-  color: #9b7545;
-  font-size: 0.65rem;
-  letter-spacing: 2px;
+  display: block;
 }
 
 .reflection-reader-title {
-  margin: 30px 0;
-  color: var(--wine);
   font-family: 'Bodoni Moda', serif;
-  font-size: 2rem;
-  text-align: center;
 }
 
-.reflection-paper {
-  padding: 30px;
-  background: #f7efdf;
-  border: 1px solid #e0ceb0;
-  color: #493a2d;
-  font-size: 0.9rem;
-  line-height: 1.95;
-  text-align: justify;
+.reflection-reader .reflection-close {
+  display: block;
+  margin: 25px auto 0;
+  cursor: pointer;
 }
 
-.reflection-paragraph {
-  margin-bottom: 20px;
+/* Prevent cover images from stretching */
+.book-cover-wrap img {
+  object-fit: cover;
 }
 
-.reflection-close {
-  padding: 10px 17px;
-  border: 1px solid var(--wine);
-  background: transparent;
-  color: var(--wine);
-  font-size: 0.65rem;
-  letter-spacing: 1px;
-}
-
-.reflection-close:hover {
-  background: var(--wine);
-  color: var(--cream);
-}
-
-/* ==========================================
-   RESPONSIVE ADJUSTMENTS
-========================================== */
-
-@media (max-width: 900px) {
-  .bookshelf-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .book-page {
-    padding: 30px 25px 60px;
-  }
-
-  .reflection-bookshelf-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
+/* Mobile reflection covers */
 @media (max-width: 600px) {
-  .bookshelf-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 12px;
-  }
-
-  .cover-volume {
-    font-size: 0.45rem;
-  }
-
-  .cover-title {
-    font-size: 0.9rem;
-  }
-
-  .cover-author {
-    font-size: 0.45rem;
-  }
-
-  .book-open-spread {
-    grid-template-columns: 1fr;
-  }
-
-  .book-open-spread::before {
-    display: none;
-  }
-
-  .book-page {
-    min-height: auto;
-    padding: 28px 23px 55px;
-    font-size: 0.8rem;
-  }
-
-  .book-page-left {
-    border-right: 0;
-    border-bottom: 1px solid #d7c5a4;
-  }
-
-  .book-page-right {
-    border-left: 0;
-  }
-
-  .reading-image-frame {
-    max-width: 260px;
-  }
-
-  .reflection-bookshelf-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-  }
-
-  .reflection-book-card {
+  .reflection-bookshelf-grid > .reflection-mini-cover {
     min-height: 205px;
     padding: 9px;
-  }
-
-  .reflection-mini-cover {
-    min-height: 180px;
-  }
-
-  .reflection-mini-title {
-    font-size: 1rem;
-  }
-
-  .reflection-reader {
-    padding: 25px 18px;
-  }
-
-  .reflection-paper {
-    padding: 20px;
-    font-size: 0.82rem;
   }
 }

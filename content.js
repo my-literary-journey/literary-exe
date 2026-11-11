@@ -15,8 +15,9 @@ window.BOOKS = [
     ]
   },
   {
-    title: "The Panchatantra",
-    content: [
+   title: "The Panchatantra",
+image: "DTWI4JzdKdf1Gp0I4AnwXXgnkVappiCaSUCeRv35LWT_BaiGVdXJuOX3y3dSC9EqbvY7iDyvsNImLLu9DF0SKZv-_bFPDAcI2zUD8ztMLIP4D6ijEQZxVAyBCNf7qU6n2C9L6l7hhTgSxfur6LeJe_Hl4_JtvraRM8LRdcraNwhdDNGPkkm0C9dCyYMeR-Hl.jpeg",
+content: [
       "Author: Traditionally attributed to Vishnu Sharma, although the original authorship is uncertain. Literary Lens: Moral and Cultural Lens.",
       "Historical and Cultural Background: The Panchatantra is an ancient collection of stories from India, originally written in Sanskrit. It is believed to have been composed around 300 CE. The stories were created to teach important lessons about life, wisdom, friendship, and leadership. Most of the stories use animals as characters to represent human behavior. It was traditionally presented as a way to teach three princes how to make wise decisions and understand the proper way to live.",
       "Major Characters: The characters are different in every story because The Panchatantra is a collection of many animal tales. Some common animal characters include the Lion, who often represents power, authority, and leadership; the Jackal, who often represents cleverness, planning, and sometimes dishonesty; the Monkey, who can represent intelligence, curiosity, or foolish decisions; and the Turtle, who often represents patience and caution.",

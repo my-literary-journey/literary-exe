@@ -1,8 +1,9 @@
 
 window.BOOKS = [
   {
-    title: "The Ancient of Days — Voice Out of the Whirlwind (Job 38)",
-    content: [
+   title: "The Ancient of Days (Job 38)",
+image: "VJ0Zn9gQM_qVkMRLSg5mTXQf5PnpQzHTDAd3uvWeYUKUf-ihcIGqL2IZQMBD1N4Kw7UWVcw0a5-dI8ySSUEW6DTeYYRyNnWL_SVkdHbTHFYgBu-IV6mdyBEymrW_2BKOBhs7XyKxugJ40dHYUaXhUw8SaxYO2m6pcCspjPLcjumtzM0BLt0spezp3Nitmj65.jpeg",
+content: [
       "Author: Unknown (from the Book of Job in the Bible). Literary Lens: Religious / Theological Lens.",
       "Historical and Cultural Background: The Book of Job is part of the Old Testament in the Bible. It is considered one of the books of wisdom literature because it talks about life, faith, suffering, and the relationship between God and human beings. During ancient times, people often connected their experiences, especially suffering and natural events, with their beliefs about God. The story of Job explores why good people also experience hardships and how they respond to difficult situations.",
       "Major Characters: God – He speaks to Job through a whirlwind and explains the greatness of His creation. Job – A man who experiences many hardships and struggles to understand why he is suffering.",

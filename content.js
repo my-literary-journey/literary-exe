@@ -32,7 +32,8 @@ content: [
   },
   {
     title: "The Ramayana",
-    content: [
+image: "xwycG9N1Ngr8CzLEgi44kvO2CpkkSrulNKkWbvtN0WZMc4qhFP6tMoGHt4FAnOyjQRoxXREQaswj908IbwPnRTU7vhCl6leWvQUowPvdCp0GfZYLo4QOFt5mZW1p36WPl7ijtr4NDG0y1Y0UaLm6jA-2WnxPnjwnSw98wsmTGM6_f3CYCMFb4VitMblH_MFj.jpeg",
+content: [
       "Author: Traditionally attributed to Valmiki. Suggested Literary Lens: Moral and Cultural Lens.",
       "Historical and Cultural Background: The Ramayana is one of the most famous ancient epics of India. It was traditionally written in Sanskrit and is attributed to the poet Valmiki. The story follows the journey of Prince Rama, who faces many challenges after his wife, Sita, is kidnapped by Ravana, the king of Lanka. The epic reflects ancient Indian beliefs, traditions, family relationships, and ideas about good leadership and moral responsibility. It has also influenced Indian literature, religion, art, and culture.",
       "Major Characters: Rama – The main character, a prince known for his courage, loyalty, and sense of duty. Sita – Rama's wife, who represents loyalty, strength, and devotion. Lakshmana – Rama's younger brother, who stays by his side and shows loyalty. Hanuman – A devoted follower of Rama who helps him rescue Sita. Ravana – The king of Lanka who kidnaps Sita and becomes Rama's main enemy.",

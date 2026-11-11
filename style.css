@@ -266,3 +266,12 @@
   }
 
 }
+.library-screen .student-profile {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  min-height: 200px !important;
+  color: #f5e8d0 !important;
+  border: 3px solid gold !important;
+}

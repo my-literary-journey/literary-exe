@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   // ==========================================
-  // WEBSITE ELEMENTS
+  // ELEMENTS
   // ==========================================
 
   const bookshelf = document.getElementById("bookshelf");
@@ -22,107 +22,31 @@ document.addEventListener("DOMContentLoaded", function () {
   const backgroundMusic = document.getElementById("backgroundMusic");
 
   // ==========================================
-  // BOOK INFORMATION
+  // BOOK DATA FROM CONTENT.JS
   // ==========================================
 
   const defaultBooks = [
-    {
-      title: "The Ancient of Days",
-      author: "ANCIENT LITERATURE"
-    },
-    {
-      title: "The Panchatantra",
-      author: "INDIAN LITERATURE"
-    },
-    {
-      title: "The Ramayana",
-      author: "INDIAN EPIC"
-    },
-    {
-      title: "The Mahabharata",
-      author: "INDIAN EPIC"
-    },
-    {
-      title: "The Iliad",
-      author: "HOMERIC EPIC"
-    },
-    {
-      title: "The Odyssey",
-      author: "HOMERIC EPIC"
-    },
-    {
-      title: "The Song of Roland",
-      author: "MEDIEVAL EPIC"
-    }
+    { title: "The Ancient of Days (Job 38)", author: "ANCIENT LITERATURE" },
+    { title: "The Panchatantra", author: "INDIAN LITERATURE" },
+    { title: "The Ramayana", author: "INDIAN EPIC" },
+    { title: "The Mahabharata", author: "INDIAN EPIC" },
+    { title: "The Iliad", author: "HOMERIC EPIC" },
+    { title: "The Odyssey", author: "HOMERIC EPIC" },
+    { title: "The Song of Roland", author: "MEDIEVAL EPIC" }
   ];
 
-  // ==========================================
-  // READ CONTENT.JS
-  // ==========================================
-
-  function getAvailableBooks() {
-
-    const possibleSources = [
-      window.BOOKS,
-      window.books,
-      window.GREAT_BOOKS,
-      window.bookData,
-      window.literaryWorks,
-      window.LITERARY_BOOKS
-    ];
-
-    for (const source of possibleSources) {
-
-      if (Array.isArray(source) && source.length > 0) {
-
-        const normalized = source.map(function (book, index) {
-
-          if (typeof book === "string") {
-            return {
-              title: defaultBooks[index]?.title || "Literary Work",
-              author: "GREAT BOOKS",
-              content: book
-            };
-          }
-
-          return {
-            ...book,
-            title:
-              book.title ||
-              book.name ||
-              defaultBooks[index]?.title ||
-              "Literary Work",
-
-            author:
-              book.author ||
-              book.writer ||
-              defaultBooks[index]?.author ||
-              "GREAT BOOKS",
-
-            content:
-              book.content ||
-              book.analysis ||
-              book.description ||
-              book.body ||
-              book.text ||
-              ""
-          };
-
-        });
-
-        return normalized;
-      }
-    }
-
-    return defaultBooks.map(function (book) {
-      return {
-        ...book,
-        content: ""
-      };
-    });
-  }
-
-  const books = getAvailableBooks();
+  const books = Array.isArray(window.BOOKS) && window.BOOKS.length
+    ? window.BOOKS.map(function (book, index) {
+        return {
+          ...book,
+          title: book.title || defaultBooks[index]?.title || "Literary Work",
+          author: book.author || defaultBooks[index]?.author || "GREAT BOOKS",
+          content: book.content || []
+        };
+      })
+    : defaultBooks.map(function (book) {
+        return { ...book, content: [] };
+      });
 
   let currentBookIndex = 0;
 
@@ -137,19 +61,13 @@ document.addEventListener("DOMContentLoaded", function () {
     books.forEach(function (book, index) {
 
       const card = document.createElement("button");
-
       card.type = "button";
       card.className = "book-card";
-
-      card.setAttribute(
-        "aria-label",
-        "Open " + book.title
-      );
+      card.setAttribute("aria-label", "Open " + book.title);
 
       const number = document.createElement("span");
       number.className = "book-number";
-      number.textContent =
-        "VOLUME " + String(index + 1).padStart(2, "0");
+      number.textContent = "VOLUME " + String(index + 1).padStart(2, "0");
 
       const title = document.createElement("span");
       title.className = "book-title";
@@ -163,10 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
       openLabel.className = "book-open-label";
       openLabel.textContent = "OPEN BOOK";
 
-      card.appendChild(number);
-      card.appendChild(title);
-      card.appendChild(author);
-      card.appendChild(openLabel);
+      card.append(number, title, author, openLabel);
 
       card.addEventListener("click", function () {
         openBook(index);
@@ -179,64 +94,61 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // DISPLAY BOOK CONTENT
+  // DISPLAY BOOK IMAGE AND CONTENT
   // ==========================================
 
-  function displayContent(content) {
+  function displayContent(book) {
 
     readerContent.innerHTML = "";
 
-    if (!content) {
+    if (book.image) {
 
-      const message = document.createElement("p");
+      const image = document.createElement("img");
+      image.src = book.image;
+      image.alt = book.title;
+      image.className = "reading-image";
 
-      message.textContent =
-        "The content for this literary work has not been connected yet. Please check the content.js file.";
+      image.onerror = function () {
+        image.remove();
+      };
 
-      readerContent.appendChild(message);
+      readerContent.appendChild(image);
 
-      return;
     }
 
-    // Preserve HTML formatting if the content contains it.
-    if (typeof content === "string") {
+    if (Array.isArray(book.content)) {
 
-      const template = document.createElement("template");
-      template.innerHTML = content;
-
-      readerContent.appendChild(template.content.cloneNode(true));
-
-      return;
-    }
-
-    if (Array.isArray(content)) {
-
-      content.forEach(function (item) {
+      book.content.forEach(function (item) {
 
         const paragraph = document.createElement("p");
-
-        paragraph.textContent =
-          typeof item === "string"
-            ? item
-            : item.text || item.content || "";
-
+        paragraph.textContent = item;
         readerContent.appendChild(paragraph);
 
       });
+
+    } else if (typeof book.content === "string" && book.content.trim()) {
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = book.content;
+      readerContent.appendChild(paragraph);
+
+    } else {
+
+      const message = document.createElement("p");
+      message.textContent = "No reading content is available for this book yet.";
+      readerContent.appendChild(message);
 
     }
 
   }
 
   // ==========================================
-  // OPEN A BOOK
+  // OPEN BOOK
   // ==========================================
 
   function openBook(index) {
 
-    if (index < 0 || index >= books.length) {
-      return;
-    }
+    if (index < 0 || index >= books.length) return;
 
     currentBookIndex = index;
 
@@ -252,14 +164,12 @@ document.addEventListener("DOMContentLoaded", function () {
       " / " +
       String(books.length).padStart(2, "0");
 
-    displayContent(book.content);
+    displayContent(book);
 
     previousBook.disabled = index === 0;
     nextBook.disabled = index === books.length - 1;
 
-    previousBook.style.opacity =
-      index === 0 ? "0.35" : "1";
-
+    previousBook.style.opacity = index === 0 ? "0.35" : "1";
     nextBook.style.opacity =
       index === books.length - 1 ? "0.35" : "1";
 
@@ -273,28 +183,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // PREVIOUS AND NEXT
+  // BOOK NAVIGATION
   // ==========================================
 
   previousBook.addEventListener("click", function () {
-
     if (currentBookIndex > 0) {
       openBook(currentBookIndex - 1);
     }
-
   });
 
   nextBook.addEventListener("click", function () {
-
     if (currentBookIndex < books.length - 1) {
       openBook(currentBookIndex + 1);
     }
-
   });
-
-  // ==========================================
-  // RETURN TO BOOKSHELF
-  // ==========================================
 
   backToShelf.addEventListener("click", function () {
 
@@ -313,15 +215,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateMusicButton(isPlaying) {
 
-    soundLabel.textContent =
-      isPlaying ? "Pause music" : "Play music";
+    soundLabel.textContent = isPlaying ? "Pause music" : "Play music";
 
     soundButton.classList.toggle("playing", isPlaying);
 
-    soundButton.setAttribute(
-      "aria-pressed",
-      String(isPlaying)
-    );
+    soundButton.setAttribute("aria-pressed", String(isPlaying));
 
   }
 
@@ -355,16 +253,11 @@ document.addEventListener("DOMContentLoaded", function () {
     updateMusicButton(false);
   });
 
-  backgroundMusic.addEventListener("ended", function () {
-    updateMusicButton(false);
-  });
-
   // ==========================================
-  // INITIALIZE WEBSITE
+  // INITIALIZE
   // ==========================================
 
   createBookshelf();
-
   updateMusicButton(false);
 
 });

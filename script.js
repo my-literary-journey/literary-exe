@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const previousBook = document.getElementById("previousBook");
   const nextBook = document.getElementById("nextBook");
 
+  const learningContent = document.getElementById("learningContent");
+  const reflectionContent = document.getElementById("reflectionContent");
+
   const soundButton = document.getElementById("soundButton");
   const soundLabel = document.getElementById("soundLabel");
   const backgroundMusic = document.getElementById("backgroundMusic");
@@ -51,10 +54,55 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentBookIndex = 0;
 
   // ==========================================
+  // DISPLAY LEARNING AND REFLECTION
+  // ==========================================
+
+  function renderLongText(element, content) {
+
+    if (!element) return;
+
+    element.innerHTML = "";
+
+    if (typeof content !== "string" || !content.trim()) {
+      const message = document.createElement("p");
+      message.textContent = "Content is not available yet.";
+      element.appendChild(message);
+      return;
+    }
+
+    const paragraphs = content
+      .trim()
+      .split(/\n\s*\n/)
+      .map(function (paragraph) {
+        return paragraph.trim();
+      })
+      .filter(Boolean);
+
+    paragraphs.forEach(function (paragraph) {
+
+      const p = document.createElement("p");
+      p.textContent = paragraph;
+
+      element.appendChild(p);
+
+    });
+
+  }
+
+  function displayLearningAndReflection() {
+
+    renderLongText(learningContent, window.LEARNING);
+    renderLongText(reflectionContent, window.REFLECTION);
+
+  }
+
+  // ==========================================
   // CREATE BOOKSHELF
   // ==========================================
 
   function createBookshelf() {
+
+    if (!bookshelf) return;
 
     bookshelf.innerHTML = "";
 
@@ -254,10 +302,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ==========================================
-  // INITIALIZE
+  // INITIALIZE WEBSITE
   // ==========================================
 
   createBookshelf();
+  displayLearningAndReflection();
   updateMusicButton(false);
 
 });

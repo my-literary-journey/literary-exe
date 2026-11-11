@@ -9,22 +9,29 @@
 
   <title>MY LITERARY JOURNEY | LITERARY.exe</title>
 
+  <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- MAIN STYLESHEET -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="page-texture"></div>
+  <div class="page-texture" aria-hidden="true"></div>
 
-  <!-- NAVIGATION -->
+  <!-- ==============================
+       NAVIGATION
+  =============================== -->
+
   <header class="topbar">
+
     <a href="#home" class="brand">LITERARY<span>.exe</span></a>
 
-    <nav class="navigation">
+    <nav class="navigation" aria-label="Main navigation">
       <a href="#home">Home</a>
       <a href="#profile">Student Profile</a>
       <a href="#collection">Bookshelf</a>
@@ -32,27 +39,44 @@
       <a href="#reflection">Reflection</a>
     </nav>
 
-    <button id="soundButton" class="sound-button" type="button">
-      <span class="sound-icon">♫</span>
+    <button
+      id="soundButton"
+      class="sound-button"
+      type="button"
+      aria-label="Play or pause background music">
+
+      <span class="sound-icon" aria-hidden="true">♫</span>
       <span id="soundLabel">Play Music</span>
+
     </button>
+
   </header>
 
-  <audio
-    id="backgroundMusic"
-    loop
-    preload="auto">
-    <source src="Myths%20of%20the%20Forest%20-%20Free%20to%20Use%20Music.mp3" type="audio/mpeg">
+  <!-- BACKGROUND MUSIC -->
+
+  <audio id="backgroundMusic" loop preload="metadata">
+    <source
+      src="Myths%20of%20the%20Forest%20-%20Free%20to%20Use%20Music.mp3"
+      type="audio/mpeg">
   </audio>
+
 
   <main>
 
-    <!-- HOME -->
+    <!-- ==============================
+         HOME
+    =============================== -->
+
     <section id="home" class="hero-section">
+
       <div class="hero-content">
+
         <p class="eyebrow">A GREAT BOOKS DIGITAL PORTFOLIO</p>
 
-        <h1>My Literary<br><span>Journey</span></h1>
+        <h1>
+          My Literary<br>
+          <span>Journey</span>
+        </h1>
 
         <div class="hero-divider">
           <span></span>
@@ -68,59 +92,110 @@
         <a href="#collection" class="hero-button">
           ENTER THE LIBRARY <span>→</span>
         </a>
+
       </div>
 
+
       <div class="hero-book-art">
+
         <div class="hero-book">
+
           <div class="hero-book-inner">
+
             <p class="hero-book-small">THE COLLECTION OF</p>
-            <h2>Great<br>Books</h2>
+
+            <h2>
+              Great<br>
+              Books
+            </h2>
+
             <span class="hero-book-ornament">❦</span>
-            <p class="hero-book-author">IMAЕ METAS</p>
+
+            <p class="hero-book-author">IMAE METAS</p>
+
           </div>
+
         </div>
+
       </div>
+
 
       <div class="hero-bottom-note">
         <span>VOL. 01</span>
         <span>READ • REFLECT • DISCOVER</span>
         <span>2026</span>
       </div>
+
     </section>
 
-    <!-- STUDENT PROFILE -->
+
+    <!-- ==============================
+         STUDENT PROFILE
+    =============================== -->
+
     <section id="profile" class="section profile-section">
+
       <div class="section-heading">
+
         <p class="eyebrow">THE READER BEHIND THE PAGES</p>
+
         <h2>Student <span>Profile</span></h2>
-        <p class="section-subtitle">A student, a reader, and a lover of literature.</p>
+
+        <p class="section-subtitle">
+          A student, a reader, and a lover of literature.
+        </p>
+
       </div>
 
+
       <div class="profile-card">
+
         <div class="profile-photo-wrap">
+
           <div class="photo-frame">
+
             <img
               src="org.picseditor.blurbackground_202689195122302.png"
               alt="Portrait of Imae Metas"
               class="profile-photo">
+
           </div>
-          <p class="photo-caption">THE MIND BEHIND THE JOURNEY</p>
+
+          <p class="photo-caption">
+            THE MIND BEHIND THE JOURNEY
+          </p>
+
         </div>
 
+
         <div class="profile-details">
+
           <p class="eyebrow">A LITTLE INTRODUCTION</p>
+
           <h3>Imae <span>Metas</span></h3>
 
+
           <div class="student-information">
+
             <p><strong>Name:</strong> Imae Metas</p>
-            <p><strong>Course:</strong> Bachelor of Science in Architecture (BS Architecture)</p>
+
+            <p>
+              <strong>Course:</strong>
+              Bachelor of Science in Architecture (BS Architecture)
+            </p>
+
             <p><strong>Year Level:</strong> 3rd Year</p>
+
             <p><strong>Section:</strong> Block A</p>
+
           </div>
+
 
           <div class="profile-divider"></div>
 
+
           <h4>About Me</h4>
+
           <p>
             Hello! I am Imae Metas, a third-year BS Architecture student.
             I am someone who enjoys exploring creativity through reading,
@@ -141,7 +216,9 @@
             participating in creative activities and competitions.
           </p>
 
+
           <h4>My Interests and Experiences in Literature</h4>
+
           <p>
             Reading novels has always been one of my favorite hobbies.
             I enjoy collecting books and discovering stories that allow
@@ -158,7 +235,9 @@
             expressed through words, stories, and visual arts.
           </p>
 
+
           <h4>My Expectations and Learning Experiences in Great Books</h4>
+
           <p>
             Before taking Great Books, I expected to discover more literary
             works and learn about stories from different cultures and
@@ -180,130 +259,276 @@
             different stories but also the lessons and experiences that
             we can apply to our own lives.
           </p>
+
         </div>
+
       </div>
+
     </section>
 
-    <!-- BOOKSHELF -->
+
+    <!-- ==============================
+         BOOKSHELF
+    =============================== -->
+
     <section id="collection" class="section bookshelf-section">
+
       <div class="section-heading">
+
         <p class="eyebrow">A COLLECTION OF LITERARY MASTERPIECES</p>
+
         <h2>The <span>Bookshelf</span></h2>
+
         <p class="section-subtitle">
           Choose a book and open its pages to begin reading.
         </p>
+
       </div>
+
 
       <div class="shelf-intro">
+
         <span class="shelf-label">THE PERSONAL LIBRARY</span>
+
         <span class="shelf-count">SEVEN LITERARY WORKS</span>
+
       </div>
 
-      <div id="bookshelf" class="bookshelf-grid"></div>
+
+      <!-- BOOK COVERS ARE GENERATED BY script.js -->
+
+      <div
+        id="bookshelf"
+        class="bookshelf-grid"
+        aria-label="Collection of seven literary books">
+      </div>
+
 
       <div class="shelf-bottom">
+
         <span>✦</span>
-        <p>Every book holds a story. Every story leaves a lesson.</p>
+
+        <p>
+          Every book holds a story. Every story leaves a lesson.
+        </p>
+
         <span>✦</span>
+
       </div>
+
     </section>
 
-    <!-- BOOK READER -->
-    <section id="reader" class="section reader-section hidden">
+
+    <!-- ==============================
+         BOOK READER
+    =============================== -->
+
+    <section
+      id="reader"
+      class="section reader-section hidden"
+      aria-label="Book reading room">
+
       <div class="reader-top">
-        <button id="backToShelf" class="back-button" type="button">
+
+        <button
+          id="backToShelf"
+          class="back-button"
+          type="button">
+
           ← BACK TO BOOKSHELF
+
         </button>
+
         <span class="reader-label">THE READING ROOM</span>
+
       </div>
+
 
       <div class="reader-paper">
+
         <div class="reader-paper-header">
+
           <span id="readerVolume">VOLUME 01</span>
+
           <span>MY LITERARY JOURNEY</span>
+
         </div>
+
 
         <div class="reader-title-area">
+
           <p class="eyebrow">A LITERARY MASTERPIECE</p>
+
           <h2 id="readerTitle">Book Title</h2>
+
           <div class="reader-title-decoration">❦</div>
+
         </div>
 
-        <div id="readerContent" class="reader-content"></div>
+
+        <!-- BOOK CONTENT AND IMAGE ARE GENERATED BY script.js -->
+
+        <div
+          id="readerContent"
+          class="reader-content">
+        </div>
+
 
         <div class="reader-navigation">
-          <button id="previousBook" type="button">← PREVIOUS</button>
+
+          <button id="previousBook" type="button">
+            ← PREVIOUS
+          </button>
+
           <span id="bookCounter">01 / 07</span>
-          <button id="nextBook" type="button">NEXT →</button>
+
+          <button id="nextBook" type="button">
+            NEXT →
+          </button>
+
         </div>
+
       </div>
+
     </section>
 
-    <!-- LEARNING -->
+
+    <!-- ==============================
+         LEARNING
+    =============================== -->
+
     <section id="learning" class="section learning-section">
+
       <div class="section-heading">
+
         <p class="eyebrow">LESSONS GAINED ALONG THE WAY</p>
+
         <h2>Summary of <span>Learning</span></h2>
+
         <p class="section-subtitle">
           What Great Books taught me about literature, culture, and life.
         </p>
+
       </div>
+
 
       <div class="learning-paper">
+
         <div class="paper-topline">
+
           <span>MY LEARNING JOURNEY</span>
+
           <span>✦</span>
+
           <span>GREAT BOOKS</span>
+
         </div>
 
-        <div id="learningContent" class="learning-content"></div>
 
-        <div class="paper-bottomline">END OF LEARNING NOTES</div>
+        <!-- LEARNING CONTENT IS GENERATED BY script.js -->
+
+        <div
+          id="learningContent"
+          class="learning-content">
+        </div>
+
+
+        <div class="paper-bottomline">
+          END OF LEARNING NOTES
+        </div>
+
       </div>
+
     </section>
 
-    <!-- REFLECTION -->
+
+    <!-- ==============================
+         PERSONAL REFLECTION
+    =============================== -->
+
     <section id="reflection" class="section reflection-section">
+
       <div class="section-heading">
+
         <p class="eyebrow">THOUGHTS BEYOND THE LAST PAGE</p>
+
         <h2>Personal <span>Reflection</span></h2>
+
         <p class="section-subtitle">
           Open each little book to read my thoughts and realizations.
         </p>
+
       </div>
 
-      <div id="reflectionContent" class="reflection-bookshelf"></div>
+
+      <!-- REFLECTION MINI-BOOKS ARE GENERATED BY script.js -->
+
+      <div
+        id="reflectionContent"
+        class="reflection-bookshelf">
+      </div>
+
     </section>
 
-    <!-- CLOSING -->
+
+    <!-- ==============================
+         CLOSING
+    =============================== -->
+
     <section class="closing-section">
+
       <div class="closing-ornament">❦</div>
 
       <p class="eyebrow">THE END OF THIS CHAPTER</p>
 
-      <h2>And the journey<br><span>continues...</span></h2>
+      <h2>
+        And the journey<br>
+        <span>continues...</span>
+      </h2>
 
       <p class="closing-quote">
         "Literature allows us to see the world through different eyes."
       </p>
 
       <div class="closing-divider">
+
         <span></span>
+
         ✦
+
         <span></span>
+
       </div>
 
-      <p class="closing-credit">A GREAT BOOKS DIGITAL PORTFOLIO</p>
-      <p class="closing-name">IMAЕ METAS · BS ARCHITECTURE · BLOCK A</p>
+      <p class="closing-credit">
+        A GREAT BOOKS DIGITAL PORTFOLIO
+      </p>
+
+      <p class="closing-name">
+        IMAE METAS · BS ARCHITECTURE · BLOCK A
+      </p>
+
     </section>
 
   </main>
 
+
+  <!-- ==============================
+       FOOTER
+  =============================== -->
+
   <footer class="site-footer">
+
     <span>LITERARY.exe</span>
+
     <span>MADE WITH LOVE FOR LITERATURE</span>
+
     <span>2026</span>
+
   </footer>
+
+
+  <!-- JAVASCRIPT FILES -->
 
   <script src="content.js"></script>
   <script src="script.js"></script>

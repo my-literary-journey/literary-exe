@@ -1,136 +1,175 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  // =====================================
+  // ==========================================
   // WEBSITE ELEMENTS
-  // =====================================
-
-  const homeScreen = document.getElementById("homeScreen");
-  const libraryScreen = document.getElementById("libraryScreen");
-  const readerScreen = document.getElementById("readerScreen");
-  const journalScreen = document.getElementById("journalScreen");
-
-  const openLibraryButton = document.getElementById("openLibrary");
-  const backToHomeButton = document.getElementById("backToHome");
-  const closeBookButton = document.getElementById("closeBook");
+  // ==========================================
 
   const bookshelf = document.getElementById("bookshelf");
+  const reader = document.getElementById("reader");
 
-  const readingTitle = document.getElementById("readingTitle");
-  const readerBookTitle = document.getElementById("readerBookTitle");
-  const readerBookAuthor = document.getElementById("readerBookAuthor");
-  const readerBookImage = document.getElementById("readerBookImage");
+  const readerTitle = document.getElementById("readerTitle");
+  const readerVolume = document.getElementById("readerVolume");
+  const readerContent = document.getElementById("readerContent");
+  const bookCounter = document.getElementById("bookCounter");
 
-  const leftPageContent = document.getElementById("leftPageContent");
-  const readingContent = document.getElementById("readingContent");
+  const backToShelf = document.getElementById("backToShelf");
+  const previousBook = document.getElementById("previousBook");
+  const nextBook = document.getElementById("nextBook");
 
-  const leftPageNumber = document.getElementById("leftPageNumber");
-  const rightPageNumber = document.getElementById("rightPageNumber");
-  const readingCount = document.getElementById("readingCount");
-  const readingNumber = document.getElementById("readingNumber");
+  const soundButton = document.getElementById("soundButton");
+  const soundLabel = document.getElementById("soundLabel");
+  const backgroundMusic = document.getElementById("backgroundMusic");
 
-  const openBook = document.getElementById("openBook");
+  // ==========================================
+  // BOOK INFORMATION
+  // ==========================================
 
-  const prevPageButton = document.getElementById("prevPage");
-  const nextPageButton = document.getElementById("nextPage");
+  const defaultBooks = [
+    {
+      title: "The Ancient of Days",
+      author: "ANCIENT LITERATURE"
+    },
+    {
+      title: "The Panchatantra",
+      author: "INDIAN LITERATURE"
+    },
+    {
+      title: "The Ramayana",
+      author: "INDIAN EPIC"
+    },
+    {
+      title: "The Mahabharata",
+      author: "INDIAN EPIC"
+    },
+    {
+      title: "The Iliad",
+      author: "HOMERIC EPIC"
+    },
+    {
+      title: "The Odyssey",
+      author: "HOMERIC EPIC"
+    },
+    {
+      title: "The Song of Roland",
+      author: "MEDIEVAL EPIC"
+    }
+  ];
 
-  const music = document.getElementById("backgroundMusic");
-  const musicToggle = document.getElementById("musicToggle");
+  // ==========================================
+  // READ CONTENT.JS
+  // ==========================================
 
-  const closeJournalButton = document.getElementById("closeJournal");
-  const showLearningButton = document.getElementById("showLearning");
-  const showReflectionButton = document.getElementById("showReflection");
-  const journalContent = document.getElementById("journalContent");
+  function getAvailableBooks() {
 
-
-  // =====================================
-  // SCREEN NAVIGATION
-  // =====================================
-
-  function showScreen(screen) {
-
-    const screens = [
-      homeScreen,
-      libraryScreen,
-      readerScreen,
-      journalScreen
+    const possibleSources = [
+      window.BOOKS,
+      window.books,
+      window.GREAT_BOOKS,
+      window.bookData,
+      window.literaryWorks,
+      window.LITERARY_BOOKS
     ];
 
-    screens.forEach(function (item) {
-      item.classList.add("hidden");
+    for (const source of possibleSources) {
+
+      if (Array.isArray(source) && source.length > 0) {
+
+        const normalized = source.map(function (book, index) {
+
+          if (typeof book === "string") {
+            return {
+              title: defaultBooks[index]?.title || "Literary Work",
+              author: "GREAT BOOKS",
+              content: book
+            };
+          }
+
+          return {
+            ...book,
+            title:
+              book.title ||
+              book.name ||
+              defaultBooks[index]?.title ||
+              "Literary Work",
+
+            author:
+              book.author ||
+              book.writer ||
+              defaultBooks[index]?.author ||
+              "GREAT BOOKS",
+
+            content:
+              book.content ||
+              book.analysis ||
+              book.description ||
+              book.body ||
+              book.text ||
+              ""
+          };
+
+        });
+
+        return normalized;
+      }
+    }
+
+    return defaultBooks.map(function (book) {
+      return {
+        ...book,
+        content: ""
+      };
     });
-
-    screen.classList.remove("hidden");
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
   }
 
+  const books = getAvailableBooks();
 
-  // =====================================
-  // BOOK DATA
-  // =====================================
-
-  const books = window.BOOKS || [];
-
-  let currentBook = null;
   let currentBookIndex = 0;
-  let currentPage = 0;
 
-
-  // =====================================
+  // ==========================================
   // CREATE BOOKSHELF
-  // =====================================
+  // ==========================================
 
   function createBookshelf() {
 
     bookshelf.innerHTML = "";
 
-    if (!books.length) {
-      bookshelf.textContent =
-        "Books are unavailable. Please check content.js.";
-      return;
-    }
-
     books.forEach(function (book, index) {
 
       const card = document.createElement("button");
+
       card.type = "button";
       card.className = "book-card";
-      card.setAttribute("aria-label", "Open " + book.title);
 
-      const cover = document.createElement("div");
-      cover.className = "book-cover";
+      card.setAttribute(
+        "aria-label",
+        "Open " + book.title
+      );
 
-      const image = document.createElement("img");
-      image.src = book.image;
-      image.alt = book.title;
-      image.loading = "lazy";
-
-      image.onerror = function () {
-        image.style.display = "none";
-      };
-
-      cover.appendChild(image);
+      const number = document.createElement("span");
+      number.className = "book-number";
+      number.textContent =
+        "VOLUME " + String(index + 1).padStart(2, "0");
 
       const title = document.createElement("span");
       title.className = "book-title";
       title.textContent = book.title;
 
-      const subtitle = document.createElement("span");
-      subtitle.className = "book-subtitle";
-      subtitle.textContent =
-        "VOLUME " + String(index + 1).padStart(2, "0");
+      const author = document.createElement("span");
+      author.className = "book-author";
+      author.textContent = book.author;
 
-      card.appendChild(cover);
+      const openLabel = document.createElement("span");
+      openLabel.className = "book-open-label";
+      openLabel.textContent = "OPEN BOOK";
+
+      card.appendChild(number);
       card.appendChild(title);
-      card.appendChild(subtitle);
+      card.appendChild(author);
+      card.appendChild(openLabel);
 
       card.addEventListener("click", function () {
-        openSelectedBook(index);
+        openBook(index);
       });
 
       bookshelf.appendChild(card);
@@ -139,431 +178,193 @@ document.addEventListener("DOMContentLoaded", function () {
 
   }
 
+  // ==========================================
+  // DISPLAY BOOK CONTENT
+  // ==========================================
 
-  // =====================================
-  // GET AUTHOR
-  // =====================================
+  function displayContent(content) {
 
-  function getAuthor(book) {
+    readerContent.innerHTML = "";
 
-    if (!book.content || !book.content.length) {
-      return "Unknown Author";
-    }
-
-    const authorLine = book.content.find(function (item) {
-      return item.toLowerCase().startsWith("author:");
-    });
-
-    if (authorLine) {
-      return authorLine.substring(7).trim();
-    }
-
-    return "Author information";
-  }
-
-
-  // =====================================
-  // OPEN SELECTED BOOK
-  // =====================================
-
-  function openSelectedBook(index) {
-
-    currentBook = books[index];
-    currentBookIndex = index;
-    currentPage = 0;
-
-    if (!currentBook) return;
-
-    readingTitle.textContent = currentBook.title;
-    readerBookTitle.textContent = currentBook.title;
-    readerBookAuthor.textContent = getAuthor(currentBook);
-
-    readerBookImage.src = currentBook.image;
-    readerBookImage.alt = currentBook.title;
-
-    readingNumber.textContent =
-      "VOLUME " + String(index + 1).padStart(2, "0");
-
-    renderPages();
-    showScreen(readerScreen);
-
-  }
-
-
-  // =====================================
-  // FORMAT CONTENT
-  // =====================================
-
-  function createContentSection(text) {
-
-    const section = document.createElement("div");
-    section.className = "page-section";
-
-    const headingMatch = text.match(/^([^:]+):\s*/);
-
-    if (headingMatch) {
-
-      const heading = document.createElement("h3");
-      heading.textContent = headingMatch[1].trim();
-
-      section.appendChild(heading);
-
-      const remainingText =
-        text.substring(headingMatch[0].length).trim();
-
-      if (remainingText) {
-        const paragraph = document.createElement("p");
-        paragraph.textContent = remainingText;
-        section.appendChild(paragraph);
-      }
-
-    } else {
-
-      const paragraph = document.createElement("p");
-      paragraph.textContent = text;
-      section.appendChild(paragraph);
-
-    }
-
-    return section;
-
-  }
-
-
-  // =====================================
-  // DISPLAY TWO-PAGE BOOK
-  // =====================================
-
-  function renderPages() {
-
-    if (!currentBook) return;
-
-    const content = currentBook.content || [];
-    const totalPages = Math.max(content.length, 1);
-
-    leftPageContent.innerHTML = "";
-    readingContent.innerHTML = "";
-
-    // LEFT PAGE: BOOK COVER
-
-    if (currentPage === 0) {
-
-      const imageFrame = document.createElement("div");
-      imageFrame.className = "book-illustration";
-
-      const image = document.createElement("img");
-      image.src = currentBook.image;
-      image.alt = currentBook.title;
-
-      imageFrame.appendChild(image);
-
-      const title = document.createElement("h3");
-      title.textContent = currentBook.title;
-
-      const author = document.createElement("p");
-      author.className = "book-author";
-      author.textContent = getAuthor(currentBook);
-
-      leftPageContent.appendChild(imageFrame);
-      leftPageContent.appendChild(title);
-      leftPageContent.appendChild(author);
-
-    } else {
-
-      const previousSection = content[currentPage - 1];
-
-      if (previousSection) {
-        leftPageContent.appendChild(
-          createContentSection(previousSection)
-        );
-      }
-
-    }
-
-    leftPageNumber.textContent =
-      String(currentPage * 2 + 1).padStart(2, "0");
-
-
-    // RIGHT PAGE: LITERARY ANALYSIS
-
-    const currentSection = content[currentPage];
-
-    if (currentSection) {
-
-      readingContent.appendChild(
-        createContentSection(currentSection)
-      );
-
-    } else {
+    if (!content) {
 
       const message = document.createElement("p");
-      message.textContent = "End of this literary work.";
-      readingContent.appendChild(message);
 
-    }
+      message.textContent =
+        "The content for this literary work has not been connected yet. Please check the content.js file.";
 
-    rightPageNumber.textContent =
-      String(currentPage * 2 + 2).padStart(2, "0");
+      readerContent.appendChild(message);
 
-
-    // PAGE COUNTER
-
-    readingCount.textContent =
-      String(currentPage + 1).padStart(2, "0") +
-      " / " +
-      String(totalPages).padStart(2, "0");
-
-    prevPageButton.disabled = currentPage === 0;
-    nextPageButton.disabled = currentPage >= totalPages - 1;
-
-  }
-
-
-  // =====================================
-  // PAGE TURN ANIMATION
-  // =====================================
-
-  function turnPage(direction) {
-
-    if (!currentBook) return;
-
-    const totalPages = currentBook.content.length;
-
-    if (direction === "next" && currentPage < totalPages - 1) {
-      currentPage++;
-    } else if (direction === "prev" && currentPage > 0) {
-      currentPage--;
-    } else {
       return;
     }
 
-    openBook.classList.remove("turn-next", "turn-prev");
+    // Preserve HTML formatting if the content contains it.
+    if (typeof content === "string") {
 
-    void openBook.offsetWidth;
+      const template = document.createElement("template");
+      template.innerHTML = content;
 
-    openBook.classList.add(
-      direction === "next" ? "turn-next" : "turn-prev"
-    );
+      readerContent.appendChild(template.content.cloneNode(true));
 
-    renderPages();
+      return;
+    }
 
-    setTimeout(function () {
-      openBook.classList.remove("turn-next", "turn-prev");
-    }, 600);
+    if (Array.isArray(content)) {
 
-  }
+      content.forEach(function (item) {
 
+        const paragraph = document.createElement("p");
 
-  // =====================================
-  // LEARNING AND REFLECTION
-  // =====================================
+        paragraph.textContent =
+          typeof item === "string"
+            ? item
+            : item.text || item.content || "";
 
-  function displayJournal(text, heading) {
-
-    journalContent.innerHTML = "";
-
-    const title = document.createElement("h2");
-    title.textContent = heading;
-    journalContent.appendChild(title);
-
-    if (!text) {
-      const message = document.createElement("p");
-      message.textContent = "No content available.";
-      journalContent.appendChild(message);
-    } else {
-
-      const paragraphs = text
-        .split(/\n\s*\n/)
-        .map(function (paragraph) {
-          return paragraph.trim();
-        })
-        .filter(Boolean);
-
-      paragraphs.forEach(function (paragraph) {
-
-        const element = document.createElement("p");
-        element.textContent = paragraph;
-
-        journalContent.appendChild(element);
+        readerContent.appendChild(paragraph);
 
       });
 
     }
 
-    showScreen(journalScreen);
-
   }
 
+  // ==========================================
+  // OPEN A BOOK
+  // ==========================================
 
-  // =====================================
-  // BACKGROUND MUSIC
-  // =====================================
+  function openBook(index) {
 
-  function updateMusicButton() {
-
-    if (!music || !musicToggle) return;
-
-    const playing = !music.paused;
-
-    musicToggle.textContent = playing
-      ? "♫ Sound On"
-      : "♫ Sound Off";
-
-    musicToggle.setAttribute(
-      "aria-pressed",
-      playing ? "true" : "false"
-    );
-
-  }
-
-
-  async function playMusic() {
-
-    if (!music) return;
-
-    try {
-
-      await music.play();
-      updateMusicButton();
-
-    } catch (error) {
-
-      updateMusicButton();
-
+    if (index < 0 || index >= books.length) {
+      return;
     }
 
-  }
+    currentBookIndex = index;
 
+    const book = books[index];
 
-  function pauseMusic() {
+    readerTitle.textContent = book.title;
 
-    if (!music) return;
+    readerVolume.textContent =
+      "VOLUME " + String(index + 1).padStart(2, "0");
 
-    music.pause();
-    updateMusicButton();
+    bookCounter.textContent =
+      String(index + 1).padStart(2, "0") +
+      " / " +
+      String(books.length).padStart(2, "0");
 
-  }
+    displayContent(book.content);
 
+    previousBook.disabled = index === 0;
+    nextBook.disabled = index === books.length - 1;
 
-  if (music) {
+    previousBook.style.opacity =
+      index === 0 ? "0.35" : "1";
 
-    music.volume = 0.35;
+    nextBook.style.opacity =
+      index === books.length - 1 ? "0.35" : "1";
 
-    music.addEventListener("play", updateMusicButton);
-    music.addEventListener("pause", updateMusicButton);
+    reader.classList.remove("hidden");
 
-    // Browser may block autoplay.
-    // The visitor can start the music using the button.
-
-    playMusic();
-
-  }
-
-
-  if (musicToggle) {
-
-    musicToggle.addEventListener("click", function () {
-
-      if (music.paused) {
-        playMusic();
-      } else {
-        pauseMusic();
-      }
-
+    reader.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
 
   }
 
+  // ==========================================
+  // PREVIOUS AND NEXT
+  // ==========================================
 
-  // =====================================
-  // MAIN BUTTONS
-  // =====================================
+  previousBook.addEventListener("click", function () {
 
-  openLibraryButton.addEventListener("click", function () {
-
-    createBookshelf();
-    showScreen(libraryScreen);
-    playMusic();
+    if (currentBookIndex > 0) {
+      openBook(currentBookIndex - 1);
+    }
 
   });
 
+  nextBook.addEventListener("click", function () {
 
-  backToHomeButton.addEventListener("click", function () {
-    showScreen(homeScreen);
+    if (currentBookIndex < books.length - 1) {
+      openBook(currentBookIndex + 1);
+    }
+
   });
 
+  // ==========================================
+  // RETURN TO BOOKSHELF
+  // ==========================================
 
-  closeBookButton.addEventListener("click", function () {
-    showScreen(libraryScreen);
+  backToShelf.addEventListener("click", function () {
+
+    reader.classList.add("hidden");
+
+    document.getElementById("collection").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
   });
 
+  // ==========================================
+  // BACKGROUND MUSIC
+  // ==========================================
 
-  prevPageButton.addEventListener("click", function () {
-    turnPage("prev");
-  });
+  function updateMusicButton(isPlaying) {
 
+    soundLabel.textContent =
+      isPlaying ? "Pause music" : "Play music";
 
-  nextPageButton.addEventListener("click", function () {
-    turnPage("next");
-  });
+    soundButton.classList.toggle("playing", isPlaying);
 
-
-  // =====================================
-  // JOURNAL NAVIGATION
-  // =====================================
-
-  showLearningButton.addEventListener("click", function () {
-
-    displayJournal(
-      window.LEARNING || "",
-      "My Learning"
+    soundButton.setAttribute(
+      "aria-pressed",
+      String(isPlaying)
     );
 
-  });
+  }
 
+  soundButton.addEventListener("click", function () {
 
-  showReflectionButton.addEventListener("click", function () {
+    if (backgroundMusic.paused) {
 
-    displayJournal(
-      window.REFLECTION || "",
-      "My Reflection"
-    );
+      backgroundMusic.play()
+        .then(function () {
+          updateMusicButton(true);
+        })
+        .catch(function () {
+          updateMusicButton(false);
+          soundLabel.textContent = "Try again";
+        });
 
-  });
+    } else {
 
+      backgroundMusic.pause();
+      updateMusicButton(false);
 
-  closeJournalButton.addEventListener("click", function () {
-    showScreen(libraryScreen);
-  });
-
-
-  // =====================================
-  // READER'S JOURNAL BUTTON
-  // =====================================
-
-  const journalButton = document.createElement("button");
-
-  journalButton.type = "button";
-  journalButton.className = "journal-button";
-  journalButton.textContent = "READER'S JOURNAL";
-
-  journalButton.addEventListener("click", function () {
-
-    displayJournal(
-      window.LEARNING || "",
-      "My Learning"
-    );
+    }
 
   });
 
-  document.querySelector(".library-bottom").appendChild(journalButton);
+  backgroundMusic.addEventListener("play", function () {
+    updateMusicButton(true);
+  });
 
+  backgroundMusic.addEventListener("pause", function () {
+    updateMusicButton(false);
+  });
 
-  // =====================================
+  backgroundMusic.addEventListener("ended", function () {
+    updateMusicButton(false);
+  });
+
+  // ==========================================
   // INITIALIZE WEBSITE
-  // =====================================
+  // ==========================================
 
-  showScreen(homeScreen);
-  updateMusicButton();
+  createBookshelf();
+
+  updateMusicButton(false);
 
 });

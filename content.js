@@ -91,8 +91,9 @@ content: [
     ]
   },
   {
-    title: "The Song of Roland",
-    content: [
+ title: "The Song of Roland",
+image: "SCKLZuPdvj4FYUvBEhRqmFe1lMdpNxEplpp4trcpohBukGILeDuDdU0iSGH1SspMEtQHxhaLRU0_I1ny64w8hOm8BP3YJQ6w5wU-dLoxINwjkTpDFQmqPNVp6QxrJH5tAfvCoqIxAXRouXuv2KdCHoo0nHl6CLvwn3dN3J6lxPf9cg69ViW2F7WDThCX2WQm.jpeg",
+content: [
       "Author: Anonymous (Unknown author; traditionally associated with the name Turoldus). Literary Lens: Historical and Moral Lens.",
       "Historical and Cultural Background: The Song of Roland, also known as La Chanson de Roland, is an Old French epic poem written during the medieval period, around the 11th century. It is considered one of the earliest major works of French literature. The story is based on the historical Battle of Roncevaux Pass in 778, during the campaign of Charlemagne in Spain. However, the poem changes many historical details and presents the battle as a conflict between Christian Franks and Muslim forces. The work reflects medieval European society, particularly its beliefs about Christianity, loyalty to the king, bravery, honor, and duty. It also represents the importance of knights and their responsibilities to their leaders and kingdoms.",
       "Major Characters: Roland – The main character, a brave knight and nephew of Charlemagne who leads the Frankish rear guard. Charlemagne – The powerful emperor of the Franks and Roland's uncle. Oliver – Roland's close friend and fellow knight, known for his wisdom and good judgment. Ganelon – Roland's stepfather who betrays the Frankish army because of his anger toward Roland. Archbishop Turpin – A religious leader who also fights alongside the Frankish knights. King Marsile – The ruler of Saragossa who opposes Charlemagne's forces. Aude – Oliver's sister and Roland's fiancée, who is deeply affected by Roland's death.",

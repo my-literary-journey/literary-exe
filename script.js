@@ -1,13 +1,11 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-
   // ==========================================
-  // 1. WEBSITE ELEMENTS
+  // WEBSITE ELEMENTS
   // ==========================================
 
   const bookshelf = document.getElementById("bookshelf");
   const reader = document.getElementById("reader");
-
   const readerTitle = document.getElementById("readerTitle");
   const readerVolume = document.getElementById("readerVolume");
   const readerContent = document.getElementById("readerContent");
@@ -25,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const backgroundMusic = document.getElementById("backgroundMusic");
 
   // ==========================================
-  // 2. BOOK INFORMATION
+  // BOOK DATA
   // ==========================================
 
   const defaultBooks = [
@@ -38,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     { title: "The Song of Roland", author: "MEDIEVAL EPIC" }
   ];
 
-  const books = Array.isArray(window.BOOKS) && window.BOOKS.length
+  const books = Array.isArray(window.BOOKS)
     ? window.BOOKS.map(function (book, index) {
         return {
           ...book,
@@ -48,68 +46,25 @@ document.addEventListener("DOMContentLoaded", function () {
           content: book.content || []
         };
       })
-    : defaultBooks.map(function (book) {
-        return { ...book, image: "", content: [] };
-      });
+    : [];
 
   let currentBookIndex = 0;
 
   // ==========================================
-  // 3. GENERAL HELPERS
+  // HELPER
   // ==========================================
 
-  function createElement(tag, className, text) {
+  function makeElement(tag, className, text) {
     const element = document.createElement(tag);
 
-    if (className) {
-      element.className = className;
-    }
-
-    if (text !== undefined) {
-      element.textContent = text;
-    }
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
 
     return element;
   }
 
-  function getParagraphs(content) {
-    if (Array.isArray(content)) {
-      return content
-        .map(function (item) {
-          return String(item).trim();
-        })
-        .filter(Boolean);
-    }
-
-    if (typeof content === "string") {
-      return content
-        .trim()
-        .split(/\n\s*\n/)
-        .map(function (item) {
-          return item.trim();
-        })
-        .filter(Boolean);
-    }
-
-    return [];
-  }
-
-  function renderLongText(element, content) {
-    if (!element) return;
-
-    element.innerHTML = "";
-
-    const paragraphs = getParagraphs(content);
-
-    paragraphs.forEach(function (paragraph) {
-      element.appendChild(
-        createElement("p", "", paragraph)
-      );
-    });
-  }
-
   // ==========================================
-  // 4. CREATE REAL BOOK COVERS
+  // CREATE REAL BOOK COVERS
   // ==========================================
 
   function createBookshelf() {
@@ -118,73 +73,67 @@ document.addEventListener("DOMContentLoaded", function () {
     bookshelf.innerHTML = "";
 
     books.forEach(function (book, index) {
+      const card = document.createElement("button");
 
-      const card = createElement("button", "book-card");
       card.type = "button";
+      card.className = "book-card";
       card.setAttribute("aria-label", "Open " + book.title);
 
-      // Book cover
-      const cover = createElement("span", "book-cover-wrap");
-
-      const coverImage = createElement("img", "book-cover-image");
-      coverImage.alt = book.title + " book cover";
-      coverImage.loading = "lazy";
+      // Actual book cover frame
+      const coverWrap = makeElement("div", "book-cover-wrap");
 
       if (book.image) {
-        coverImage.src = book.image;
+        const image = document.createElement("img");
 
-        coverImage.onerror = function () {
-          coverImage.style.display = "none";
-          cover.classList.add("cover-image-missing");
+        image.src = book.image;
+        image.alt = book.title + " book cover";
+        image.className = "book-cover-image";
+        image.loading = "lazy";
+
+        image.onerror = function () {
+          image.remove();
+
+          const fallback = makeElement(
+            "div",
+            "cover-image-fallback",
+            book.title
+          );
+
+          fallback.style.cssText =
+            "height:100%;display:flex;align-items:center;" +
+            "justify-content:center;text-align:center;padding:18px;" +
+            "color:#390817;font-family:serif;font-size:1.2rem;";
+
+          coverWrap.appendChild(fallback);
         };
-      } else {
-        cover.classList.add("cover-image-missing");
+
+        coverWrap.appendChild(image);
       }
 
-      // Decorative cover details
-      const coverOverlay = createElement("span", "cover-overlay");
-
-      const coverVolume = createElement(
+      // Book information
+      const volume = makeElement(
         "span",
-        "cover-volume",
+        "book-volume",
         "VOLUME " + String(index + 1).padStart(2, "0")
       );
 
-      const coverTitle = createElement(
-        "span",
-        "cover-title",
-        book.title
-      );
+      const title = makeElement("span", "book-title", book.title);
 
-      const coverAuthor = createElement(
-        "span",
-        "cover-author",
-        book.author
-      );
+      const author = makeElement("span", "book-author", book.author);
 
-      const coverOrnament = createElement(
-        "span",
-        "cover-ornament",
-        "❦"
-      );
-
-      coverOverlay.append(
-        coverVolume,
-        coverOrnament,
-        coverTitle,
-        coverAuthor
-      );
-
-      cover.append(coverImage, coverOverlay);
-
-      // Label below the cover
-      const openLabel = createElement(
+      const openLabel = makeElement(
         "span",
         "book-open-label",
-        "OPEN BOOK  →"
+        "✦ OPEN BOOK ✦"
       );
 
-      card.append(cover, openLabel);
+      card.append(
+        coverWrap,
+        volume,
+        title,
+        author,
+        openLabel
+      );
 
       card.addEventListener("click", function () {
         openBook(index);
@@ -195,96 +144,56 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // 5. CREATE THE OPEN BOOK PAGES
+  // OPEN BOOK CONTENT
   // ==========================================
 
   function displayContent(book) {
-    if (!readerContent) return;
-
     readerContent.innerHTML = "";
 
-    const spread = createElement("div", "book-open-spread");
-
-    const leftPage = createElement("article", "book-page book-page-left");
-    const rightPage = createElement("article", "book-page book-page-right");
-
-    // Book image
     if (book.image) {
-      const imageFrame = createElement("div", "reading-image-frame");
-      const image = createElement("img", "reading-image");
+      const image = document.createElement("img");
 
       image.src = book.image;
       image.alt = book.title;
-      image.loading = "lazy";
+      image.className = "reading-image";
 
       image.onerror = function () {
-        imageFrame.remove();
+        image.style.display = "none";
       };
 
-      imageFrame.appendChild(image);
-      leftPage.appendChild(imageFrame);
+      readerContent.appendChild(image);
     }
 
-    const leftHeading = createElement(
-      "p",
-      "page-running-title",
-      book.title
-    );
-
-    const rightHeading = createElement(
-      "p",
-      "page-running-title",
-      "MY LITERARY JOURNEY"
-    );
-
-    leftPage.appendChild(leftHeading);
-    rightPage.appendChild(rightHeading);
-
-    // Preserve every paragraph in the original content
-    const paragraphs = getParagraphs(book.content);
-
-    if (paragraphs.length === 0) {
-      leftPage.appendChild(
-        createElement(
+    if (Array.isArray(book.content)) {
+      book.content.forEach(function (item) {
+        const paragraph = makeElement(
           "p",
-          "",
-          "No reading content is available for this book yet."
-        )
-      );
+          "reading-paragraph",
+          item
+        );
+
+        readerContent.appendChild(paragraph);
+      });
+    } else if (
+      typeof book.content === "string" &&
+      book.content.trim()
+    ) {
+      book.content.split(/\n\s*\n/).forEach(function (item) {
+        if (!item.trim()) return;
+
+        readerContent.appendChild(
+          makeElement("p", "reading-paragraph", item.trim())
+        );
+      });
     } else {
-
-      const midpoint = Math.ceil(paragraphs.length / 2);
-
-      const leftParagraphs = paragraphs.slice(0, midpoint);
-      const rightParagraphs = paragraphs.slice(midpoint);
-
-      leftParagraphs.forEach(function (paragraph) {
-        leftPage.appendChild(
-          createElement("p", "reading-paragraph", paragraph)
-        );
-      });
-
-      rightParagraphs.forEach(function (paragraph) {
-        rightPage.appendChild(
-          createElement("p", "reading-paragraph", paragraph)
-        );
-      });
+      readerContent.appendChild(
+        makeElement("p", "", "No reading content is available.")
+      );
     }
-
-    leftPage.appendChild(
-      createElement("span", "page-number", "✦")
-    );
-
-    rightPage.appendChild(
-      createElement("span", "page-number", "✦")
-    );
-
-    spread.append(leftPage, rightPage);
-    readerContent.appendChild(spread);
   }
 
   // ==========================================
-  // 6. OPEN A BOOK
+  // OPEN BOOK FUNCTION
   // ==========================================
 
   function openBook(index) {
@@ -309,6 +218,10 @@ document.addEventListener("DOMContentLoaded", function () {
     previousBook.disabled = index === 0;
     nextBook.disabled = index === books.length - 1;
 
+    previousBook.style.opacity = index === 0 ? "0.35" : "1";
+    nextBook.style.opacity =
+      index === books.length - 1 ? "0.35" : "1";
+
     reader.classList.remove("hidden");
 
     reader.scrollIntoView({
@@ -318,230 +231,140 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // 7. BOOK NAVIGATION
+  // BOOK NAVIGATION
   // ==========================================
 
-  if (previousBook) {
-    previousBook.addEventListener("click", function () {
-      if (currentBookIndex > 0) {
-        openBook(currentBookIndex - 1);
-      }
-    });
-  }
+  previousBook.addEventListener("click", function () {
+    if (currentBookIndex > 0) {
+      openBook(currentBookIndex - 1);
+    }
+  });
 
-  if (nextBook) {
-    nextBook.addEventListener("click", function () {
-      if (currentBookIndex < books.length - 1) {
-        openBook(currentBookIndex + 1);
-      }
-    });
-  }
+  nextBook.addEventListener("click", function () {
+    if (currentBookIndex < books.length - 1) {
+      openBook(currentBookIndex + 1);
+    }
+  });
 
-  if (backToShelf) {
-    backToShelf.addEventListener("click", function () {
-      reader.classList.add("hidden");
+  backToShelf.addEventListener("click", function () {
+    reader.classList.add("hidden");
 
-      document.getElementById("collection").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+    document.getElementById("collection").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
     });
-  }
+  });
 
   // ==========================================
-  // 8. LEARNING SECTION
+  // LEARNING SECTION
   // ==========================================
 
   function displayLearning() {
-    renderLongText(learningContent, window.LEARNING);
-  }
+    if (!learningContent) return;
 
-  // ==========================================
-  // 9. REFLECTION MINI-BOOKS
-  // ==========================================
+    learningContent.innerHTML = "";
 
-  function prepareReflectionSections() {
+    const text = window.LEARNING;
 
-    const paragraphs = getParagraphs(window.REFLECTION);
+    if (typeof text !== "string" || !text.trim()) return;
 
-    const sections = [];
-    let currentSection = null;
-    const introduction = [];
+    const paragraphs = text
+      .trim()
+      .split(/\n\s*\n/)
+      .map(item => item.trim())
+      .filter(Boolean);
 
-    paragraphs.forEach(function (paragraph) {
-
-      const isNumberedHeading =
-        /^(?:\d+[\.\)]\s*|question\s+\d+)/i.test(paragraph);
-
-      const isOverallHeading =
-        /^overall reflection\s*$/i.test(paragraph);
-
-      if (isNumberedHeading || isOverallHeading) {
-
-        if (currentSection) {
-          sections.push(currentSection);
-        }
-
-        currentSection = {
-          title: isOverallHeading
-            ? "Overall Reflection"
-            : paragraph.replace(/^\d+[\.\)]\s*/, "").trim(),
-          content: []
-        };
-
-      } else if (currentSection) {
-
-        currentSection.content.push(paragraph);
-
+    paragraphs.forEach(function (item) {
+      if (/^\d+\.\s/.test(item)) {
+        learningContent.appendChild(
+          makeElement("h3", "", item)
+        );
       } else {
-
-        introduction.push(paragraph);
-
+        learningContent.appendChild(
+          makeElement("p", "", item)
+        );
       }
     });
-
-    if (currentSection) {
-      sections.push(currentSection);
-    }
-
-    // Fallback: retain all text even if the format differs
-    if (sections.length === 0 && paragraphs.length) {
-      paragraphs.forEach(function (paragraph, index) {
-        sections.push({
-          title: "Reflection " + (index + 1),
-          content: [paragraph]
-        });
-      });
-    }
-
-    return {
-      introduction: introduction,
-      sections: sections
-    };
   }
 
-  function openReflection(section, index) {
+  // ==========================================
+  // REFLECTION BOOKS
+  // ==========================================
 
-    const oldReader = reflectionContent.querySelector(
-      ".reflection-reader"
-    );
-
-    if (oldReader) oldReader.remove();
-
-    const panel = createElement("div", "reflection-reader");
-
-    const panelTop = createElement("div", "reflection-reader-top");
-
-    const panelLabel = createElement(
-      "span",
-      "reflection-reader-label",
-      "PERSONAL REFLECTION · " + String(index + 1).padStart(2, "0")
-    );
-
-    const closeButton = createElement(
-      "button",
-      "reflection-close",
-      "CLOSE ×"
-    );
-
-    closeButton.type = "button";
-
-    closeButton.addEventListener("click", function () {
-      panel.remove();
-    });
-
-    panelTop.append(panelLabel, closeButton);
-
-    const title = createElement(
-      "h3",
-      "reflection-reader-title",
-      section.title
-    );
-
-    const paper = createElement("div", "reflection-paper");
-
-    section.content.forEach(function (paragraph) {
-      paper.appendChild(
-        createElement("p", "reflection-paragraph", paragraph)
-      );
-    });
-
-    panel.append(panelTop, title, paper);
-    reflectionContent.appendChild(panel);
-
-    panel.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  }
-
-  function createReflectionBooks() {
-
+  function prepareReflection() {
     if (!reflectionContent) return;
 
     reflectionContent.innerHTML = "";
 
-    const data = prepareReflectionSections();
+    const text = window.REFLECTION;
 
-    // Introductory reflection
-    if (data.introduction.length) {
-      const intro = createElement("div", "reflection-intro");
+    if (typeof text !== "string" || !text.trim()) return;
 
-      data.introduction.forEach(function (paragraph) {
-        intro.appendChild(createElement("p", "", paragraph));
-      });
+    const paragraphs = text
+      .trim()
+      .split(/\n\s*\n/)
+      .map(item => item.trim())
+      .filter(Boolean);
 
-      reflectionContent.appendChild(intro);
-    }
+    const sections = [];
+    let introduction = [];
+    let currentSection = null;
 
-    const grid = createElement(
-      "div",
-      "reflection-bookshelf-grid"
-    );
+    paragraphs.forEach(function (paragraph) {
+      if (/^\d+\.\s/.test(paragraph)) {
+        currentSection = {
+          title: paragraph,
+          content: []
+        };
 
-    data.sections.forEach(function (section, index) {
+        sections.push(currentSection);
+      } else if (/^Overall Reflection$/i.test(paragraph)) {
+        currentSection = {
+          title: "Overall Reflection",
+          content: []
+        };
 
-      const card = createElement(
-        "button",
-        "reflection-book-card"
+        sections.push(currentSection);
+      } else if (currentSection) {
+        currentSection.content.push(paragraph);
+      } else {
+        introduction.push(paragraph);
+      }
+    });
+
+    // Introductory text
+    introduction.forEach(function (paragraph) {
+      reflectionContent.appendChild(
+        makeElement("p", "reflection-intro", paragraph)
       );
+    });
+
+    // Reflection book cards
+    const grid = makeElement("div", "reflection-book-grid");
+
+    sections.forEach(function (section, index) {
+      const card = document.createElement("button");
 
       card.type = "button";
+      card.className = "reflection-book-card";
 
-      const cover = createElement(
-        "span",
-        "reflection-mini-cover"
+      const cover = makeElement("div", "mini-book-cover");
+
+      cover.append(
+        makeElement(
+          "span",
+          "mini-book-number",
+          "REFLECTION " + String(index + 1).padStart(2, "0")
+        ),
+        makeElement("span", "mini-book-ornament", "❦"),
+        makeElement("span", "mini-book-title", section.title),
+        makeElement("span", "mini-book-open", "OPEN TO READ")
       );
 
-      const number = createElement(
-        "span",
-        "reflection-mini-number",
-        "NOTEBOOK " + String(index + 1).padStart(2, "0")
-      );
-
-      const ornament = createElement(
-        "span",
-        "reflection-mini-ornament",
-        "❦"
-      );
-
-      const title = createElement(
-        "span",
-        "reflection-mini-title",
-        section.title
-      );
-
-      const label = createElement(
-        "span",
-        "reflection-mini-label",
-        "OPEN TO READ"
-      );
-
-      cover.append(number, ornament, title, label);
       card.appendChild(cover);
 
       card.addEventListener("click", function () {
-        openReflection(section, index);
+        openReflection(section);
       });
 
       grid.appendChild(card);
@@ -551,16 +374,68 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // 10. BACKGROUND MUSIC
+  // OPEN REFLECTION
+  // ==========================================
+
+  function openReflection(section) {
+    const oldReader = reflectionContent.querySelector(
+      ".reflection-reader"
+    );
+
+    if (oldReader) oldReader.remove();
+
+    const panel = makeElement("div", "reflection-reader");
+
+    const top = makeElement("div", "reflection-reader-top");
+
+    top.append(
+      makeElement("span", "", "MY LITERARY JOURNEY"),
+      makeElement("span", "", "A PERSONAL REFLECTION")
+    );
+
+    const heading = makeElement("h3", "", section.title);
+
+    const content = makeElement(
+      "div",
+      "reflection-reader-content"
+    );
+
+    section.content.forEach(function (paragraph) {
+      content.appendChild(
+        makeElement("p", "", paragraph)
+      );
+    });
+
+    const close = makeElement(
+      "button",
+      "reflection-close",
+      "CLOSE BOOK"
+    );
+
+    close.type = "button";
+
+    close.addEventListener("click", function () {
+      panel.remove();
+    });
+
+    panel.append(top, heading, content, close);
+
+    reflectionContent.appendChild(panel);
+
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
+
+  // ==========================================
+  // BACKGROUND MUSIC
   // ==========================================
 
   function updateMusicButton(isPlaying) {
-
-    if (!soundButton || !soundLabel) return;
-
     soundLabel.textContent = isPlaying
-      ? "Pause Music"
-      : "Play Music";
+      ? "Pause music"
+      : "Play music";
 
     soundButton.classList.toggle("playing", isPlaying);
 
@@ -570,45 +445,36 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  if (soundButton && backgroundMusic) {
-
-    soundButton.addEventListener("click", function () {
-
-      if (backgroundMusic.paused) {
-
-        backgroundMusic.play()
-          .then(function () {
-            updateMusicButton(true);
-          })
-          .catch(function () {
-            updateMusicButton(false);
-            soundLabel.textContent = "Try Again";
-          });
-
-      } else {
-
-        backgroundMusic.pause();
-        updateMusicButton(false);
-
-      }
-    });
-
-    backgroundMusic.addEventListener("play", function () {
-      updateMusicButton(true);
-    });
-
-    backgroundMusic.addEventListener("pause", function () {
+  soundButton.addEventListener("click", function () {
+    if (backgroundMusic.paused) {
+      backgroundMusic.play()
+        .then(function () {
+          updateMusicButton(true);
+        })
+        .catch(function () {
+          soundLabel.textContent = "Try again";
+          updateMusicButton(false);
+        });
+    } else {
+      backgroundMusic.pause();
       updateMusicButton(false);
-    });
-  }
+    }
+  });
+
+  backgroundMusic.addEventListener("play", function () {
+    updateMusicButton(true);
+  });
+
+  backgroundMusic.addEventListener("pause", function () {
+    updateMusicButton(false);
+  });
 
   // ==========================================
-  // 11. INITIALIZE
+  // INITIALIZE
   // ==========================================
 
   createBookshelf();
   displayLearning();
-  createReflectionBooks();
+  prepareReflection();
   updateMusicButton(false);
-
 });

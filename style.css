@@ -299,3 +299,71 @@ footer p {
     font-size: 11px;
   }
 }
+
+/* ==================================
+   VINTAGE BOOK OPENING ANIMATION
+================================== */
+
+.bookshelf .book {
+  transition:
+    transform 0.45s ease,
+    box-shadow 0.45s ease,
+    filter 0.45s ease;
+}
+
+.bookshelf .book:hover {
+  transform: translateY(-10px) rotate(-1deg);
+  filter: brightness(1.08);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.3);
+}
+
+.reading-view {
+  transform-origin: top center;
+}
+
+.reading-view:not(.hidden) {
+  animation: bookOpen 0.8s ease both;
+}
+
+@keyframes bookOpen {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(-12deg) translateY(25px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(3deg) translateY(-3px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg) translateY(0);
+  }
+}
+
+.feature-image {
+  animation: pageReveal 0.9s ease both;
+}
+
+@keyframes pageReveal {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bookshelf .book,
+  .reading-view,
+  .feature-image {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+

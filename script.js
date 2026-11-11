@@ -1,18 +1,12 @@
+
 document.addEventListener("DOMContentLoaded", function () {
   "use strict";
 
   const $ = (selector, parent = document) =>
     parent.querySelector(selector);
 
-  // ==========================================
-  // WEBSITE ELEMENTS
-  // ==========================================
-
   const bookshelf = $("#bookshelf") || $("#bookshelfGrid");
-
-  const reader =
-    $("#readingView") || $("#readerScreen") || $("#reader");
-
+  const reader = $("#readingView") || $("#readerScreen") || $("#reader");
   const readerTitle = $("#readerTitle") || $("#readingTitle");
   const readerContent = $("#readerContent") || $("#readingContent");
   const readerVolume = $("#readerVolume") || $("#readingNumber");
@@ -25,15 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const learningContent = $("#learningContent");
   const reflectionContent = $("#reflectionContent");
 
+  const books = Array.isArray(window.BOOKS) ? window.BOOKS : [];
+
   let currentBookIndex = 0;
-
-  // ==========================================
-  // ORIGINAL BOOK DATA
-  // ==========================================
-
-  const books = Array.isArray(window.BOOKS)
-    ? window.BOOKS
-    : [];
+  let currentPageIndex = 0;
+  let currentPages = [];
 
   const fallbackAuthors = [
     "Book of Job",
@@ -45,11 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
     "Anonymous"
   ];
 
-  function makeElement(tag, className, text) {
+  function makeElement(tag, className, content) {
     const element = document.createElement(tag);
 
     if (className) element.className = className;
-    if (text !== undefined) element.textContent = text;
+    if (content !== undefined) element.textContent = content;
 
     return element;
   }
@@ -77,10 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // OPENING COVER
+  // OPENING SCREEN
   // ==========================================
 
   function createOpeningScreen() {
+    if ($("#openingScreen")) return;
+
     const opening = makeElement("section", "opening-screen");
     opening.id = "openingScreen";
 
@@ -90,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       <div class="opening-frame">
         <div class="opening-small">A GREAT BOOKS DIGITAL PORTFOLIO</div>
-
         <div class="opening-ornament">✦</div>
 
         <div class="opening-book">
@@ -103,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
 
             <div class="opening-book-flourish">❦</div>
-
             <span class="opening-book-author">IMAE METAS</span>
           </div>
         </div>
@@ -114,8 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </p>
 
         <button type="button" id="enterLibrary" class="opening-button">
-          OPEN THE BOOK
-          <span>→</span>
+          OPEN MY JOURNEY <span>→</span>
         </button>
 
         <div class="opening-footer">
@@ -125,16 +114,13 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     document.body.prepend(opening);
-
     document.body.classList.add("website-locked");
 
-    const enterButton = $("#enterLibrary");
-
-    enterButton.addEventListener("click", function () {
+    $("#enterLibrary", opening).addEventListener("click", function () {
       opening.classList.add("opening-exit");
       document.body.classList.remove("website-locked");
 
-      window.setTimeout(() => {
+      window.setTimeout(function () {
         opening.remove();
 
         const library = $("#collection");
@@ -144,18 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
             behavior: "smooth",
             block: "start"
           });
-        } else {
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
         }
       }, 650);
     });
   }
 
   // ==========================================
-  // BOOKSHELF
+  // BOOKSHELF — ORIGINAL UPLOADED IMAGES
   // ==========================================
 
   function createBookshelf() {
@@ -166,10 +147,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     bookshelf.innerHTML = "";
 
-    books.forEach((book, index) => {
+    books.forEach(function (book, index) {
       const card = makeElement("button", "book-card");
       card.type = "button";
-      card.setAttribute("aria-label", `Open ${book.title}`);
+      card.setAttribute("aria-label", "Open " + book.title);
 
       const cover = makeElement("div", "book-cover-wrap");
 
@@ -178,51 +159,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
         image.className = "book-cover-image";
         image.src = book.image;
-        image.alt = `${book.title} cover`;
+        image.alt = book.title + " original literary artwork";
         image.loading = "lazy";
 
         image.onerror = function () {
-          cover.innerHTML = "";
+          image.style.display = "none";
 
-          cover.appendChild(
-            makeElement(
-              "div",
-              "cover-image-missing",
-              book.title
-            )
+          const fallback = makeElement(
+            "div",
+            "cover-image-missing",
+            book.title
           );
+
+          cover.appendChild(fallback);
         };
 
         cover.appendChild(image);
       } else {
         cover.appendChild(
-          makeElement(
-            "div",
-            "cover-image-missing",
-            book.title
-          )
+          makeElement("div", "cover-image-missing", book.title)
         );
       }
 
-      const title = makeElement(
-        "span",
-        "cover-title",
-        book.title
+      const information = makeElement("div", "book-information");
+
+      information.append(
+        makeElement("span", "cover-title", book.title),
+        makeElement(
+          "span",
+          "cover-author",
+          book.author || fallbackAuthors[index] || "Great Books"
+        ),
+        makeElement("span", "book-open-label", "OPEN BOOK →")
       );
 
-      const author = makeElement(
-        "span",
-        "cover-author",
-        book.author || fallbackAuthors[index] || "Great Books"
-      );
-
-      const openLabel = makeElement(
-        "span",
-        "book-open-label",
-        "Click to open"
-      );
-
-      card.append(cover, title, author, openLabel);
+      card.append(cover, information);
 
       card.addEventListener("click", function () {
         openBook(index);
@@ -233,34 +204,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // OPEN BOOK READER
+  // REAL BOOK PAGES
   // ==========================================
 
-  function createPage(paragraphs, pageNumber, title, imagePath) {
-    const page = makeElement("div", "book-page");
+  function divideIntoPages(paragraphs, paragraphsPerPage) {
+    const pages = [];
+
+    for (let i = 0; i < paragraphs.length; i += paragraphsPerPage) {
+      pages.push(paragraphs.slice(i, i + paragraphsPerPage));
+    }
+
+    return pages.length ? pages : [["No written content is available."]];
+  }
+
+  function createReadingPage(paragraphs, pageNumber, title) {
+    const page = makeElement("article", "book-page");
 
     page.appendChild(
       makeElement("div", "page-running-title", title)
     );
 
-    if (imagePath) {
-      const frame = makeElement("div", "reading-image-frame");
-      const image = document.createElement("img");
+    const body = makeElement("div", "page-text");
 
-      image.className = "reading-image";
-      image.src = imagePath;
-      image.alt = `${title} illustration`;
-      image.loading = "lazy";
-
-      frame.appendChild(image);
-      page.appendChild(frame);
-    }
-
-    paragraphs.forEach(paragraph => {
-      page.appendChild(
+    paragraphs.forEach(function (paragraph) {
+      body.appendChild(
         makeElement("p", "reading-paragraph", paragraph)
       );
     });
+
+    page.appendChild(body);
 
     page.appendChild(
       makeElement("span", "page-number", String(pageNumber))
@@ -269,35 +241,78 @@ document.addEventListener("DOMContentLoaded", function () {
     return page;
   }
 
-  function displayBook(book) {
+  function renderCurrentSpread() {
     if (!readerContent) return;
 
     readerContent.innerHTML = "";
 
-    const paragraphs = getParagraphs(book.content);
-
-    if (!paragraphs.length) {
-      paragraphs.push(
-        "The written content for this book is not available."
-      );
-    }
-
-    const middle = Math.ceil(paragraphs.length / 2);
-
-    const leftPage = paragraphs.slice(0, middle);
-    const rightPage = paragraphs.slice(middle);
-
     const spread = makeElement("div", "book-open-spread");
 
-    spread.appendChild(
-      createPage(leftPage, 1, book.title, book.image)
-    );
+    const leftParagraphs = currentPages[currentPageIndex] || [];
+    const rightParagraphs = currentPages[currentPageIndex + 1] || [];
 
-    spread.appendChild(
-      createPage(rightPage, 2, book.title, "")
+    spread.append(
+      createReadingPage(
+        leftParagraphs,
+        currentPageIndex + 1,
+        books[currentBookIndex].title
+      ),
+      createReadingPage(
+        rightParagraphs,
+        currentPageIndex + 2,
+        books[currentBookIndex].title
+      )
     );
 
     readerContent.appendChild(spread);
+
+    const pageControls = makeElement("div", "page-controls");
+
+    const previousPage = makeElement(
+      "button",
+      "button button-outline",
+      "← Previous Pages"
+    );
+
+    previousPage.type = "button";
+    previousPage.disabled = currentPageIndex === 0;
+
+    previousPage.addEventListener("click", function () {
+      if (currentPageIndex >= 2) {
+        currentPageIndex -= 2;
+        renderCurrentSpread();
+      }
+    });
+
+    const pageLabel = makeElement(
+      "span",
+      "page-count",
+      "Pages " +
+        (currentPageIndex + 1) +
+        "–" +
+        Math.min(currentPageIndex + 2, currentPages.length) +
+        " of " +
+        currentPages.length
+    );
+
+    const nextPage = makeElement(
+      "button",
+      "button button-outline",
+      "Next Pages →"
+    );
+
+    nextPage.type = "button";
+    nextPage.disabled = currentPageIndex + 2 >= currentPages.length;
+
+    nextPage.addEventListener("click", function () {
+      if (currentPageIndex + 2 < currentPages.length) {
+        currentPageIndex += 2;
+        renderCurrentSpread();
+      }
+    });
+
+    pageControls.append(previousPage, pageLabel, nextPage);
+    readerContent.appendChild(pageControls);
   }
 
   function openBook(index) {
@@ -306,30 +321,29 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!book || !reader) return;
 
     currentBookIndex = index;
+    currentPageIndex = 0;
 
-    if (readerTitle) {
-      readerTitle.textContent = book.title;
-    }
+    const paragraphs = getParagraphs(book.content);
+    currentPages = divideIntoPages(paragraphs, 2);
+
+    if (readerTitle) readerTitle.textContent = book.title;
 
     if (readerVolume) {
       readerVolume.textContent =
-        `VOLUME ${String(index + 1).padStart(2, "0")}`;
+        "VOLUME " + String(index + 1).padStart(2, "0");
     }
 
     if (bookCounter) {
       bookCounter.textContent =
-        `${String(index + 1).padStart(2, "0")} / ${String(books.length).padStart(2, "0")}`;
+        String(index + 1).padStart(2, "0") +
+        " / " +
+        String(books.length).padStart(2, "0");
     }
 
-    displayBook(book);
+    if (previousButton) previousButton.disabled = index === 0;
+    if (nextButton) nextButton.disabled = index === books.length - 1;
 
-    if (previousButton) {
-      previousButton.disabled = index === 0;
-    }
-
-    if (nextButton) {
-      nextButton.disabled = index === books.length - 1;
-    }
+    renderCurrentSpread();
 
     reader.classList.remove("hidden");
 
@@ -365,13 +379,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // ==========================================
-  // LEARNING JOURNAL
+  // LEARNING JOURNAL — CLICK TO OPEN
   // ==========================================
 
   function displayLearning() {
     if (!learningContent) return;
-
-    const originalLearning = window.LEARNING || "";
 
     const cover = makeElement("button", "learning-journal-cover");
     cover.type = "button";
@@ -386,7 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const paper = makeElement("div", "learning-paper hidden");
     const entries = makeElement("div", "learning-entries");
 
-    getParagraphs(originalLearning).forEach(paragraph => {
+    getParagraphs(window.LEARNING || "").forEach(function (paragraph) {
       entries.appendChild(
         makeElement("p", "learning-paragraph", paragraph)
       );
@@ -400,10 +412,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     close.type = "button";
 
+    close.addEventListener("click", function () {
+      paper.classList.add("hidden");
+      cover.classList.remove("hidden");
+
+      cover.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    });
+
     paper.append(entries, close);
 
-    learningContent.replaceWith(cover);
-    cover.insertAdjacentElement("afterend", paper);
+    learningContent.innerHTML = "";
+    learningContent.append(cover, paper);
 
     cover.addEventListener("click", function () {
       cover.classList.add("hidden");
@@ -414,20 +436,10 @@ document.addEventListener("DOMContentLoaded", function () {
         block: "center"
       });
     });
-
-    close.addEventListener("click", function () {
-      paper.classList.add("hidden");
-      cover.classList.remove("hidden");
-
-      cover.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    });
   }
 
   // ==========================================
-  // REFLECTION DIARY
+  // REFLECTION DIARY — CLICK TO OPEN
   // ==========================================
 
   function parseReflectionSections(value) {
@@ -439,15 +451,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const sections = [];
     let current = null;
 
-    lines.forEach(line => {
+    lines.forEach(function (line) {
       const numberedHeading = line.match(/^\d+[.)]\s+(.+)$/);
-      const isOverall = /^overall reflection$/i.test(line);
+      const overall = /^overall reflection$/i.test(line);
 
-      if (numberedHeading || isOverall) {
+      if (numberedHeading || overall) {
         current = {
-          title: numberedHeading
-            ? numberedHeading[1]
-            : line,
+          title: numberedHeading ? numberedHeading[1] : line,
           content: []
         };
 
@@ -472,9 +482,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function displayReflection() {
     if (!reflectionContent) return;
 
-    const sections = parseReflectionSections(
-      window.REFLECTION || ""
-    );
+    const sections = parseReflectionSections(window.REFLECTION || "");
 
     const cover = makeElement("button", "reflection-diary-cover");
     cover.type = "button";
@@ -490,7 +498,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const grid = makeElement("div", "reflection-bookshelf-grid");
     const readerPanel = makeElement("div", "reflection-reader hidden");
 
-    sections.forEach((section, index) => {
+    sections.forEach(function (section, index) {
       const miniBook = makeElement("button", "reflection-mini-cover");
       miniBook.type = "button";
 
@@ -498,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
         makeElement(
           "span",
           "reflection-mini-number",
-          `ENTRY ${String(index + 1).padStart(2, "0")}`
+          "ENTRY " + String(index + 1).padStart(2, "0")
         ),
         makeElement("span", "reflection-mini-ornament", "✧"),
         makeElement("span", "reflection-mini-title", section.title),
@@ -508,23 +516,12 @@ document.addEventListener("DOMContentLoaded", function () {
       miniBook.addEventListener("click", function () {
         readerPanel.innerHTML = "";
 
-        readerPanel.appendChild(
-          makeElement(
-            "span",
-            "reflection-reader-label eyebrow",
-            "PERSONAL REFLECTION"
-          )
+        readerPanel.append(
+          makeElement("span", "reflection-reader-label eyebrow", "PERSONAL REFLECTION"),
+          makeElement("h3", "reflection-reader-title", section.title)
         );
 
-        readerPanel.appendChild(
-          makeElement(
-            "h3",
-            "reflection-reader-title",
-            section.title
-          )
-        );
-
-        section.content.forEach(paragraph => {
+        section.content.forEach(function (paragraph) {
           readerPanel.appendChild(
             makeElement("p", "reflection-paragraph", paragraph)
           );
@@ -570,11 +567,6 @@ document.addEventListener("DOMContentLoaded", function () {
       cover.classList.remove("hidden");
       readerPanel.classList.add("hidden");
       grid.classList.remove("hidden");
-
-      cover.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
     });
 
     inside.append(grid, readerPanel, closeDiary);
@@ -597,12 +589,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // MUSIC
   // ==========================================
 
-  const music =
-    $("#backgroundMusic") || $("#musicPlayer");
-
-  const soundButton =
-    $("#soundButton") || $("#musicButton");
-
+  const music = $("#backgroundMusic") || $("#musicPlayer");
+  const soundButton = $("#soundButton") || $("#musicButton");
   const soundLabel = $("#soundLabel");
 
   if (soundButton && music) {
@@ -611,36 +599,24 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
           await music.play();
 
-          if (soundLabel) {
-            soundLabel.textContent = "Pause Music";
-          }
+          if (soundLabel) soundLabel.textContent = "Pause Music";
 
-          soundButton.setAttribute(
-            "aria-label",
-            "Pause background music"
-          );
+          soundButton.setAttribute("aria-label", "Pause background music");
         } catch (error) {
-          if (soundLabel) {
-            soundLabel.textContent = "Music unavailable";
-          }
+          if (soundLabel) soundLabel.textContent = "Music unavailable";
         }
       } else {
         music.pause();
 
-        if (soundLabel) {
-          soundLabel.textContent = "Play Music";
-        }
+        if (soundLabel) soundLabel.textContent = "Play Music";
 
-        soundButton.setAttribute(
-          "aria-label",
-          "Play background music"
-        );
+        soundButton.setAttribute("aria-label", "Play background music");
       }
     });
   }
 
   // ==========================================
-  // MOBILE MENU
+  // MOBILE NAVIGATION
   // ==========================================
 
   const menuToggle = $("#menuToggle");
@@ -650,7 +626,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mainNav?.classList.toggle("open");
   });
 
-  mainNav?.querySelectorAll("a").forEach(link => {
+  mainNav?.querySelectorAll("a").forEach(function (link) {
     link.addEventListener("click", function () {
       mainNav.classList.remove("open");
     });
@@ -672,19 +648,18 @@ document.addEventListener("DOMContentLoaded", function () {
       ? (window.scrollY / total) * 100
       : 0;
 
-    progressBar.style.width = `${percentage}%`;
+    progressBar.style.width = percentage + "%";
   }
 
   window.addEventListener("scroll", updateProgress);
   updateProgress();
 
   // ==========================================
-  // START
+  // START WEBSITE
   // ==========================================
 
   createBookshelf();
   displayLearning();
   displayReflection();
   createOpeningScreen();
-
 });

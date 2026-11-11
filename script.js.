@@ -1,0 +1,54 @@
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const bookButtons = document.querySelectorAll(".book");
+  const readingView = document.getElementById("readingView");
+
+  function displayBook(index) {
+
+    if (!window.BOOKS || !window.BOOKS[index]) {
+      readingView.innerHTML = "<p>Book content is not available yet.</p>";
+      return;
+    }
+
+    const book = window.BOOKS[index];
+
+    bookButtons.forEach(function (button) {
+      button.classList.remove("active");
+    });
+
+    bookButtons[index].classList.add("active");
+
+    readingView.innerHTML = `
+      <p class="eyebrow">LITERARY ANALYSIS</p>
+      <h3>${book.title}</h3>
+      <div class="book-content">
+        ${book.content.map(function (paragraph) {
+          return `<p>${paragraph}</p>`;
+        }).join("")}
+      </div>
+    `;
+
+    readingView.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
+
+  bookButtons.forEach(function (button, index) {
+    button.addEventListener("click", function () {
+      displayBook(index);
+    });
+  });
+
+  if (window.LEARNING) {
+    document.getElementById("learningContent").innerHTML =
+      `<p>${window.LEARNING}</p>`;
+  }
+
+  if (window.REFLECTION) {
+    document.getElementById("reflectionContent").innerHTML =
+      `<p>${window.REFLECTION}</p>`;
+  }
+
+});

@@ -61,8 +61,9 @@ content: [
     ]
   },
   {
-    title: "The Iliad",
-    content: [
+   title: "The Iliad",
+image: "nfbMaiFQjuZIvzm2q4LkHW0XWgD6LwI1xDrWpVEBhoN3Z9kj7W4pBkmcEjAwkX42uXXkt0d4KyB8wt6krmC1MS8DUwGbr7_twy0XN45fkwwVu88gfjd9EvqXT-bTckScoSLj_zwRDJD8eijrrPZOrC0XGQBS6M4r8Zjv79NXkySBOMACY_YdyMdu8Q-sb2u4.jpeg",
+content: [
       "Author: Traditionally attributed to Homer. Literary Lens: Historical and Humanistic Lens.",
       "Historical and Cultural Background: The Iliad is an ancient Greek epic poem traditionally attributed to Homer. It is set during the Trojan War, a legendary conflict between the Greeks and the people of Troy. The story reflects ancient Greek culture, especially their beliefs about honor, bravery, loyalty, gods, and war. During this period, warriors were highly respected for their courage and achievements in battle. The Greeks also believed that gods and goddesses could influence human lives and events. These beliefs are reflected throughout the poem, where divine beings sometimes interfere in the struggles of humans.",
       "Major Characters: Achilles – The greatest Greek warrior, known for his strength, bravery, and pride. Hector – The prince of Troy and its greatest defender, who fights to protect his family and city. Agamemnon – The leader of the Greek forces who argues with Achilles. Patroclus – Achilles' close friend whose death becomes an important turning point in the story. Priam – The elderly king of Troy and father of Hector. Paris – The Trojan prince whose relationship with Helen is connected to the beginning of the Trojan War. Helen – The wife of Menelaus whose departure with Paris becomes the cause of the conflict. Briseis – A captive woman whose possession creates a disagreement between Achilles and Agamemnon.",

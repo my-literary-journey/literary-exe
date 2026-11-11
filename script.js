@@ -1,5 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", function () {
+
   // ==========================================
   // WEBSITE ELEMENTS
   // ==========================================
@@ -51,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentBookIndex = 0;
 
   // ==========================================
-  // HELPER
+  // ELEMENT HELPER
   // ==========================================
 
   function makeElement(tag, className, text) {
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // CREATE REAL BOOK COVERS
+  // CREATE BOOK COVER
   // ==========================================
 
   function createBookshelf() {
@@ -73,53 +74,49 @@ document.addEventListener("DOMContentLoaded", function () {
     bookshelf.innerHTML = "";
 
     books.forEach(function (book, index) {
+
       const card = document.createElement("button");
 
       card.type = "button";
       card.className = "book-card";
       card.setAttribute("aria-label", "Open " + book.title);
 
-      // Actual book cover frame
       const coverWrap = makeElement("div", "book-cover-wrap");
 
+      // Book image
       if (book.image) {
         const image = document.createElement("img");
 
         image.src = book.image;
-        image.alt = book.title + " book cover";
+        image.alt = book.title + " illustration";
         image.className = "book-cover-image";
         image.loading = "lazy";
 
         image.onerror = function () {
           image.remove();
-
-          const fallback = makeElement(
-            "div",
-            "cover-image-fallback",
-            book.title
-          );
-
-          fallback.style.cssText =
-            "height:100%;display:flex;align-items:center;" +
-            "justify-content:center;text-align:center;padding:18px;" +
-            "color:#390817;font-family:serif;font-size:1.2rem;";
-
-          coverWrap.appendChild(fallback);
+          coverWrap.classList.add("cover-image-missing");
         };
 
         coverWrap.appendChild(image);
+      } else {
+        coverWrap.classList.add("cover-image-missing");
       }
 
-      // Book information
-      const volume = makeElement(
-        "span",
-        "book-volume",
-        "VOLUME " + String(index + 1).padStart(2, "0")
+      // Dark overlay and cover typography
+      const overlay = makeElement("div", "cover-overlay");
+
+      overlay.append(
+        makeElement(
+          "span",
+          "cover-volume",
+          "VOLUME " + String(index + 1).padStart(2, "0")
+        ),
+        makeElement("span", "cover-ornament", "❦"),
+        makeElement("span", "cover-title", book.title),
+        makeElement("span", "cover-author", book.author)
       );
 
-      const title = makeElement("span", "book-title", book.title);
-
-      const author = makeElement("span", "book-author", book.author);
+      coverWrap.appendChild(overlay);
 
       const openLabel = makeElement(
         "span",
@@ -127,13 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "✦ OPEN BOOK ✦"
       );
 
-      card.append(
-        coverWrap,
-        volume,
-        title,
-        author,
-        openLabel
-      );
+      card.append(coverWrap, openLabel);
 
       card.addEventListener("click", function () {
         openBook(index);
@@ -144,48 +135,122 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // OPEN BOOK CONTENT
+  // READER CONTENT
   // ==========================================
 
-  function displayContent(book) {
+  function getBookParagraphs(book) {
+    if (Array.isArray(book.content)) {
+      return book.content.filter(function (item) {
+        return typeof item === "string" && item.trim();
+      });
+    }
+
+    if (typeof book.content === "string") {
+      return book.content
+        .split(/\n\s*\n/)
+        .map(function (item) {
+          return item.trim();
+        })
+        .filter(Boolean);
+    }
+
+    return [];
+  }
+
+  function displayContent(book, index) {
     readerContent.innerHTML = "";
 
+    const paragraphs = getBookParagraphs(book);
+
+    // Two-page book layout
+    const spread = makeElement("div", "book-open-spread");
+
+    const leftPage = makeElement(
+      "article",
+      "book-page book-page-left"
+    );
+
+    const rightPage = makeElement(
+      "article",
+      "book-page book-page-right"
+    );
+
+    const leftHeader = makeElement(
+      "div",
+      "page-running-title",
+      book.title
+    );
+
+    const rightHeader = makeElement(
+      "div",
+      "page-running-title",
+      "MY LITERARY JOURNEY"
+    );
+
+    leftPage.appendChild(leftHeader);
+    rightPage.appendChild(rightHeader);
+
+    // Image on the left page
     if (book.image) {
+      const imageFrame = makeElement(
+        "div",
+        "reading-image-frame"
+      );
+
       const image = document.createElement("img");
 
       image.src = book.image;
       image.alt = book.title;
       image.className = "reading-image";
+      image.loading = "lazy";
 
       image.onerror = function () {
-        image.style.display = "none";
+        imageFrame.remove();
       };
 
-      readerContent.appendChild(image);
+      imageFrame.appendChild(image);
+      leftPage.appendChild(imageFrame);
     }
 
-    if (Array.isArray(book.content)) {
-      book.content.forEach(function (item) {
-        const paragraph = makeElement(
-          "p",
-          "reading-paragraph",
-          item
-        );
+    // Divide reading paragraphs between pages
+    const middle = Math.ceil(paragraphs.length / 2);
 
-        readerContent.appendChild(paragraph);
-      });
-    } else if (
-      typeof book.content === "string" &&
-      book.content.trim()
-    ) {
-      book.content.split(/\n\s*\n/).forEach(function (item) {
-        if (!item.trim()) return;
+    paragraphs.forEach(function (paragraph, paragraphIndex) {
 
-        readerContent.appendChild(
-          makeElement("p", "reading-paragraph", item.trim())
-        );
-      });
-    } else {
+      const targetPage = paragraphIndex < middle
+        ? leftPage
+        : rightPage;
+
+      const text = makeElement(
+        "p",
+        "reading-paragraph",
+        paragraph
+      );
+
+      targetPage.appendChild(text);
+    });
+
+    leftPage.appendChild(
+      makeElement(
+        "span",
+        "page-number",
+        String(index * 2 + 1).padStart(2, "0")
+      )
+    );
+
+    rightPage.appendChild(
+      makeElement(
+        "span",
+        "page-number",
+        String(index * 2 + 2).padStart(2, "0")
+      )
+    );
+
+    spread.append(leftPage, rightPage);
+
+    readerContent.appendChild(spread);
+
+    if (paragraphs.length === 0 && !book.image) {
       readerContent.appendChild(
         makeElement("p", "", "No reading content is available.")
       );
@@ -193,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================================
-  // OPEN BOOK FUNCTION
+  // OPEN BOOK
   // ==========================================
 
   function openBook(index) {
@@ -213,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
       " / " +
       String(books.length).padStart(2, "0");
 
-    displayContent(book);
+    displayContent(book, index);
 
     previousBook.disabled = index === 0;
     nextBook.disabled = index === books.length - 1;
@@ -271,10 +336,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const paragraphs = text
       .trim()
       .split(/\n\s*\n/)
-      .map(item => item.trim())
+      .map(function (item) {
+        return item.trim();
+      })
       .filter(Boolean);
 
     paragraphs.forEach(function (item) {
+
       if (/^\d+\.\s/.test(item)) {
         learningContent.appendChild(
           makeElement("h3", "", item)
@@ -284,11 +352,12 @@ document.addEventListener("DOMContentLoaded", function () {
           makeElement("p", "", item)
         );
       }
+
     });
   }
 
   // ==========================================
-  // REFLECTION BOOKS
+  // REFLECTION MINI-BOOKS
   // ==========================================
 
   function prepareReflection() {
@@ -303,106 +372,131 @@ document.addEventListener("DOMContentLoaded", function () {
     const paragraphs = text
       .trim()
       .split(/\n\s*\n/)
-      .map(item => item.trim())
+      .map(function (item) {
+        return item.trim();
+      })
       .filter(Boolean);
 
     const sections = [];
-    let introduction = [];
+    const introduction = [];
+
     let currentSection = null;
 
     paragraphs.forEach(function (paragraph) {
+
       if (/^\d+\.\s/.test(paragraph)) {
+
         currentSection = {
           title: paragraph,
           content: []
         };
 
         sections.push(currentSection);
+
       } else if (/^Overall Reflection$/i.test(paragraph)) {
+
         currentSection = {
           title: "Overall Reflection",
           content: []
         };
 
         sections.push(currentSection);
+
       } else if (currentSection) {
+
         currentSection.content.push(paragraph);
+
       } else {
+
         introduction.push(paragraph);
+
       }
+
     });
 
-    // Introductory text
     introduction.forEach(function (paragraph) {
       reflectionContent.appendChild(
         makeElement("p", "reflection-intro", paragraph)
       );
     });
 
-    // Reflection book cards
-    const grid = makeElement("div", "reflection-book-grid");
+    const grid = makeElement(
+      "div",
+      "reflection-bookshelf-grid"
+    );
 
     sections.forEach(function (section, index) {
+
       const card = document.createElement("button");
 
       card.type = "button";
-      card.className = "reflection-book-card";
+      card.className = "reflection-mini-cover";
+      card.setAttribute("aria-label", "Open " + section.title);
 
-      const cover = makeElement("div", "mini-book-cover");
-
-      cover.append(
+      card.append(
         makeElement(
           "span",
-          "mini-book-number",
+          "reflection-mini-number",
           "REFLECTION " + String(index + 1).padStart(2, "0")
         ),
-        makeElement("span", "mini-book-ornament", "❦"),
-        makeElement("span", "mini-book-title", section.title),
-        makeElement("span", "mini-book-open", "OPEN TO READ")
+
+        makeElement("span", "reflection-mini-ornament", "❦"),
+
+        makeElement(
+          "span",
+          "reflection-mini-title",
+          section.title
+        ),
+
+        makeElement(
+          "span",
+          "reflection-mini-label",
+          "OPEN TO READ"
+        )
       );
 
-      card.appendChild(cover);
-
       card.addEventListener("click", function () {
-        openReflection(section);
+        openReflection(section, card);
       });
 
       grid.appendChild(card);
+
     });
 
     reflectionContent.appendChild(grid);
   }
 
   // ==========================================
-  // OPEN REFLECTION
+  // OPEN REFLECTION BOOK
   // ==========================================
 
-  function openReflection(section) {
+  function openReflection(section, selectedCard) {
+
     const oldReader = reflectionContent.querySelector(
       ".reflection-reader"
     );
 
     if (oldReader) oldReader.remove();
 
-    const panel = makeElement("div", "reflection-reader");
+    const panel = makeElement("article", "reflection-reader");
 
-    const top = makeElement("div", "reflection-reader-top");
-
-    top.append(
-      makeElement("span", "", "MY LITERARY JOURNEY"),
-      makeElement("span", "", "A PERSONAL REFLECTION")
-    );
-
-    const heading = makeElement("h3", "", section.title);
-
-    const content = makeElement(
+    const top = makeElement(
       "div",
-      "reflection-reader-content"
+      "reflection-reader-label",
+      "MY LITERARY JOURNEY • PERSONAL REFLECTION"
     );
+
+    const heading = makeElement(
+      "h3",
+      "reflection-reader-title",
+      section.title
+    );
+
+    const paper = makeElement("div", "reflection-paper");
 
     section.content.forEach(function (paragraph) {
-      content.appendChild(
-        makeElement("p", "", paragraph)
+      paper.appendChild(
+        makeElement("p", "reflection-paragraph", paragraph)
       );
     });
 
@@ -416,9 +510,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     close.addEventListener("click", function () {
       panel.remove();
+
+      if (selectedCard) {
+        selectedCard.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
     });
 
-    panel.append(top, heading, content, close);
+    panel.append(top, heading, paper, close);
 
     reflectionContent.appendChild(panel);
 
@@ -433,9 +534,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==========================================
 
   function updateMusicButton(isPlaying) {
+
+    if (!soundButton || !soundLabel) return;
+
     soundLabel.textContent = isPlaying
-      ? "Pause music"
-      : "Play music";
+      ? "Pause Music"
+      : "Play Music";
 
     soundButton.classList.toggle("playing", isPlaying);
 
@@ -445,36 +549,46 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  soundButton.addEventListener("click", function () {
-    if (backgroundMusic.paused) {
-      backgroundMusic.play()
-        .then(function () {
-          updateMusicButton(true);
-        })
-        .catch(function () {
-          soundLabel.textContent = "Try again";
-          updateMusicButton(false);
-        });
-    } else {
-      backgroundMusic.pause();
+  if (soundButton && backgroundMusic && soundLabel) {
+
+    soundButton.addEventListener("click", function () {
+
+      if (backgroundMusic.paused) {
+
+        backgroundMusic.play()
+          .then(function () {
+            updateMusicButton(true);
+          })
+          .catch(function () {
+            updateMusicButton(false);
+          });
+
+      } else {
+
+        backgroundMusic.pause();
+        updateMusicButton(false);
+
+      }
+
+    });
+
+    backgroundMusic.addEventListener("play", function () {
+      updateMusicButton(true);
+    });
+
+    backgroundMusic.addEventListener("pause", function () {
       updateMusicButton(false);
-    }
-  });
+    });
 
-  backgroundMusic.addEventListener("play", function () {
-    updateMusicButton(true);
-  });
-
-  backgroundMusic.addEventListener("pause", function () {
     updateMusicButton(false);
-  });
+  }
 
   // ==========================================
-  // INITIALIZE
+  // INITIALIZE WEBSITE
   // ==========================================
 
   createBookshelf();
   displayLearning();
   prepareReflection();
-  updateMusicButton(false);
+
 });

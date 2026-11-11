@@ -20,13 +20,12 @@ document.addEventListener("DOMContentLoaded", function () {
     bookButtons[index].classList.add("active");
 
     readingView.innerHTML = `
-      <p class="eyebrow">LITERARY ANALYSIS</p>
-      <h3>${book.title}</h3>
-      <div class="book-content">
-        ${book.content.map(function (paragraph) {
-          return `<p>${paragraph}</p>`;
-        }).join("")}
-      </div>
+   <p class="eyebrow">LITERARY ANALYSIS</p>
+<h3>${book.title}</h3>
+
+${book.image ? `<img class="feature-image" src="${book.image}" alt="${book.title}">` : ""}
+
+<div class="book-content">
     `;
 
     readingView.scrollIntoView({
